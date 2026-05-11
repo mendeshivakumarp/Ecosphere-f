@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EcoSphere Admin - Orders</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+
+/* GLOBAL */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f4f6f8;
+display:flex;
+flex-direction:column;
+min-height:100vh;
+}
+
+/* ================= HEADER ================= */
+.header{
+position:fixed;
+top:0;
+width:100%;
+height:80px;
+background:#12ba11;
+z-index:1100;
+}
+
+.nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+max-width:1200px;
+margin:auto;
+padding:1rem 2rem;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo h1{
+color:white;
+}
+
+.logo i{
+color:#ffd700;
+}
+
+/* HAMBURGER STYLES */
+.hamburger {
+    display: none; /* Hidden on desktop, shown via JS/Media queries if needed */
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.profile-mini{
+font-size:25px;
+}
+
+.profile-mini i{
+color:#fff;
+}
+
+/* DASHBOARD */
+.dashboard{
+margin-top:80px;
+display:flex;
+flex:1;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:220px;
+background:#1e293b;
+color:white;
+padding-top:20px;
+transition: all 0.3s ease;
+}
+
+.admin-logo{
+display:flex;
+align-items:center;
+gap:10px;
+padding:20px;
+font-size:20px;
+font-weight:bold;
+color:#ffd700;
+border-bottom:1px solid #334155;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+cursor:pointer;
+transition:0.3s;
+}
+
+.sidebar a i{
+margin-right:10px;
+}
+
+.sidebar a:hover, .sidebar a.active{
+background:#334155;
+padding-left:25px;
+}
+
+/* MAIN */
+.main-content{
+flex:1;
+padding:30px;
+}
+
+/* NEW TITLE STYLE */
+.page-title{
+display:flex;
+align-items:center;
+gap:12px;
+font-size:26px;
+font-weight:bold;
+color:#1a1a1a;
+margin-bottom:20px;
+}
+
+.page-title i{
+color:#12ba11;
+background:#e8f5ec;
+padding:10px;
+border-radius:10px;
+font-size:20px;
+}
+
+/* CARD */
+.order-card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 8px 18px rgba(0,0,0,0.1);
+}
+
+.header-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:15px;
+}
+
+/* SEARCH */
+.search-box{
+padding:8px 12px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #eee;
+text-align: center;
+}
+
+th{
+background:#e8f5ec;
+}
+
+/* STATUS */
+.status-select{
+padding:6px;
+border-radius:6px;
+border:1px solid #ccc;
+font-weight:bold;
+background: white;
+}
+
+.status-select.pending{ color:orange; border-color: orange; }
+.status-select.delivered{ color:green; border-color: green; }
+.status-select.cancelled{ color:red; border-color: red; }
+
+/* BUTTON */
+.btn{
+padding:6px 10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-right:5px;
+color:white;
+}
+
+.view{
+background:#3498db;
+}
+
+/* FOOTER */
+.footer{
+background:#1a1a1a;
+color:white;
+padding:2rem;
+text-align:center;
+}
+
+/* MOBILE RESPONSIVENESS HINT (Layout remains same, but shows hamburger) */
+@media (max-width: 768px) {
+    .hamburger { display: block; }
+    .sidebar { display: none; }
+    .sidebar.active { display: block; position: absolute; height: 100%; z-index: 1000; }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+<nav class="nav">
+    <div class="logo-container">
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="logo">
+            <h1><i class="fas fa-leaf"></i> EcoSphere</h1>
+        </div>
+    </div>
+
+<div class="profile-mini">
+<a href="admin_profile.html"><i class="fas fa-user-circle"></i></a>
+</div>
+</nav>
+</header>
+
+<!-- DASHBOARD -->
+<div class="dashboard">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+<div class="admin-logo">
+<i class="fas fa-user-shield"></i>
+<span>Admin Panel</span>
+</div>
+<a href="./admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+<a href="./a_users.html"><i class="fas fa-users"></i> Users</a>
+<a href="./a_recyciier.html" ><i class="fas fa-recycle"></i> Recycler</a>
+<a href="./a_products.html"><i class="fas fa-box"></i> Products</a>
+<a href="./a_order.html" class="active"><i class="fas fa-shopping-cart"></i> Orders</a>
+<a href="./index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+<h1 class="page-title">
+<i class="fas fa-shopping-bag"></i> Orders Management
+</h1>
+
+<div class="order-card">
+
+<div class="header-row">
+<h3>All Orders</h3>
+<input type="text" id="searchInput" placeholder="Search orders..." class="search-box" onkeyup="searchOrders()">
+</div>
+
+<table id="ordersTable">
+
+<thead>
+<tr>
+<th>Order ID</th>
+<th>Buyer</th>
+<th>Product</th>
+<th>Quantity</th>
+<th>Total</th>
+<th>Status</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>#ORD1021</td>
+<td>Priya Singh</td>
+<td>Plastic Bottles</td>
+<td>50 kg</td>
+<td>₹600</td>
+<td>
+<select class="status-select" onchange="changeStatus(this)">
+<option value="delivered" selected>Delivered</option>
+<option value="pending">Pending</option>
+<option value="cancelled">Cancelled</option>
+</select>
+</td>
+<td>20 Jan 2026</td>
+<td><button class="btn view" onclick="viewOrder(this)">View</button></td>
+</tr>
+
+<tr>
+<td>#ORD1022</td>
+<td>Ravi Sharma</td>
+<td>Old Newspapers</td>
+<td>30 kg</td>
+<td>₹240</td>
+<td>
+<select class="status-select" onchange="changeStatus(this)">
+<option value="pending" selected>Pending</option>
+<option value="delivered">Delivered</option>
+<option value="cancelled">Cancelled</option>
+</select>
+</td>
+<td>21 Jan 2026</td>
+<td><button class="btn view" onclick="viewOrder(this)">View</button></td>
+</tr>
+
+<tr>
+<td>#ORD1023</td>
+<td>Amit Kumar</td>
+<td>Iron Scrap</td>
+<td>100 kg</td>
+<td>₹4500</td>
+<td>
+<select class="status-select" onchange="changeStatus(this)">
+<option value="pending">Pending</option>
+<option value="delivered">Delivered</option>
+<option value="cancelled" selected>Cancelled</option>
+</select>
+</td>
+<td>22 Jan 2026</td>
+<td><button class="btn view" onclick="viewOrder(this)">View</button></td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+</main>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+<p>© 2026 EcoSphere | Admin Dashboard</p>
+</footer>
+
+<script>
+
+/* HAMBURGER TOGGLE */
+document.getElementById("hamburger").addEventListener("click", function() {
+    document.getElementById("sidebar").classList.toggle("active");
+});
+
+/* VIEW ORDER */
+function viewOrder(btn){
+let row=btn.parentNode.parentNode;
+let data=row.children;
+let status = data[5].querySelector('select').value;
+
+alert(
+"--- ORDER DETAILS ---\n" +
+"Order ID: "+data[0].innerText+
+"\nBuyer: "+data[1].innerText+
+"\nProduct: "+data[2].innerText+
+"\nQuantity: "+data[3].innerText+
+"\nTotal: "+data[4].innerText+
+"\nStatus: "+status.toUpperCase()+
+"\nDate: "+data[6].innerText
+);
+}
+
+/* SEARCH */
+function searchOrders(){
+let input=document.getElementById("searchInput").value.toLowerCase();
+let rows=document.querySelectorAll("#ordersTable tbody tr");
+
+rows.forEach(row=>{
+let text=row.innerText.toLowerCase();
+row.style.display=text.includes(input) ? "" : "none";
+});
+}
+
+/* STATUS COLOR LOGIC */
+function changeStatus(select){
+// Remove old classes
+select.classList.remove("pending","delivered","cancelled");
+// Add new class based on value
+select.classList.add(select.value);
+}
+
+// Initializing colors on page load
+document.querySelectorAll(".status-select").forEach(select=>{
+changeStatus(select);
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSphere Admin - Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* GLOBAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #f4f6f8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ================= HEADER ================= */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            background: #12ba11;
+            z-index: 1100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo h1 {
+            color: white;
+        }
+
+        .logo i {
+            color: #ffd700;
+        }
+
+        .hamburger {
+            display: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .profile-mini {
+            font-size: 25px;
+        }
+
+        .profile-mini i {
+            color: #fff;
+        }
+
+        /* ================= DASHBOARD LAYOUT ================= */
+        .dashboard {
+            margin-top: 80px;
+            display: flex;
+            flex: 1;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            width: 220px;
+            background: #1e293b;
+            color: white;
+            padding-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd700;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            width: 20px;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background: #334155;
+            padding-left: 25px;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 26px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .page-title i {
+            color: #12ba11;
+            background: #e8f5ec;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 20px;
+        }
+
+        /* CARD & TABLE */
+        .product-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        th {
+            background: #e8f5ec;
+            color: #2e7d32;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 4px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.8; }
+        .view { background: #3498db; color: white; }
+        .edit { background: #f1c40f; color: #000; }
+        .delete { background: #e74c3c; color: white; }
+        .add { background: #12ba11; color: white; }
+
+        /* POPUP FORM */
+        .form-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            width: 350px;
+            z-index: 2000;
+        }
+
+        .form-popup h3 { margin-bottom: 15px; color: #334155; }
+        .form-popup input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        /* RESPONSIVE TWEAK */
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .sidebar {
+                display: none;
+                position: absolute;
+                z-index: 1050;
+                height: 100%;
+            }
+            .sidebar.active { display: block; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo-container">
+                <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="logo">
+                    <h1><i class="fas fa-leaf"></i> EcoSphere</h1>
+                </div>
+            </div>
+            <div class="profile-mini">
+                <a href="admin_profile.html"><i class="fas fa-user-circle"></i></a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="admin-logo">
+                <i class="fas fa-user-shield"></i>
+                <span>Admin Panel</span>
+            </div>
+            <a href="./admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="./a_users.html"><i class="fas fa-users"></i> Users</a>
+            <a href="./a_recyciier.html"><i class="fas fa-recycle"></i> Recycler</a>
+            <a href="./a_products.html" class="active"><i class="fas fa-box"></i> Products</a>
+            <a href="./a_order.html"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <a href="./index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="main-content">
+            <h1 class="page-title">
+                <i class="fas fa-box"></i> Products Management
+            </h1>
+
+            <div class="product-card">
+                <div class="header-row">
+                    <h3>All Scrap Products</h3>
+                    <button class="btn add" onclick="openForm()">+ Add Product</button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Seller</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTable">
+                        <tr>
+                            <td>Plastic Bottles</td>
+                            <td>Plastic</td>
+                            <td>₹12/kg</td>
+                            <td>120kg</td>
+                            <td>Ravi Sharma</td>
+                            <td>
+                                <button class="btn view" onclick="viewProduct(this)">View</button>
+                                <button class="btn edit" onclick="editProduct(this)">Edit</button>
+                                <button class="btn delete" onclick="deleteProduct(this)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Aluminium Cans</td>
+                            <td>Metal</td>
+                            <td>₹80/kg</td>
+                            <td>70kg</td>
+                            <td>Suresh Kumar</td>
+                            <td>
+                                <button class="btn view" onclick="viewProduct(this)">View</button>
+                                <button class="btn edit" onclick="editProduct(this)">Edit</button>
+                                <button class="btn delete" onclick="deleteProduct(this)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- FORM POPUP -->
+    <div class="form-popup" id="productForm">
+        <h3>Add New Product</h3>
+        <input type="text" id="productName" placeholder="Product Name">
+        <input type="text" id="category" placeholder="Category (e.g. Metal)">
+        <input type="text" id="price" placeholder="Price (e.g. ₹50/kg)">
+        <input type="text" id="stock" placeholder="Stock (e.g. 100kg)">
+        <input type="text" id="seller" placeholder="Seller Name">
+
+        <div style="display: flex; gap: 10px;">
+            <button class="btn add" style="flex: 1;" onclick="addProduct()">Add</button>
+            <button class="btn delete" style="flex: 1;" onclick="closeForm()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 EcoSphere | Admin Dashboard</p>
+    </footer>
+
+    <script>
+        /* MOBILE SIDEBAR TOGGLE */
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+
+        /* FORM CONTROLS */
+        function openForm() {
+            document.getElementById("productForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("productForm").style.display = "none";
+            // Reset inputs
+            document.querySelectorAll(".form-popup input").forEach(i => i.value = "");
+        }
+
+        /* ADD PRODUCT */
+        function addProduct() {
+            const name = document.getElementById("productName").value;
+            const category = document.getElementById("category").value;
+            const price = document.getElementById("price").value;
+            const stock = document.getElementById("stock").value;
+            const seller = document.getElementById("seller").value;
+
+            if (!name || !category || !price || !stock || !seller) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            const table = document.getElementById("productTable");
+            const row = table.insertRow();
+
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${category}</td>
+                <td>${price}</td>
+                <td>${stock}</td>
+                <td>${seller}</td>
+                <td>
+                    <button class="btn view" onclick="viewProduct(this)">View</button>
+                    <button class="btn edit" onclick="editProduct(this)">Edit</button>
+                    <button class="btn delete" onclick="deleteProduct(this)">Delete</button>
+                </td>
+            `;
+
+            closeForm();
+        }
+
+        /* DELETE */
+        function deleteProduct(btn) {
+            if(confirm("Delete this product?")) {
+                btn.closest('tr').remove();
+            }
+        }
+
+        /* VIEW */
+        function viewProduct(btn) {
+            const data = btn.closest('tr').children;
+            alert(
+                "--- Product Details ---\n" +
+                "Product: " + data[0].innerText + "\n" +
+                "Category: " + data[1].innerText + "\n" +
+                "Price: " + data[2].innerText + "\n" +
+                "Stock: " + data[3].innerText + "\n" +
+                "Seller: " + data[4].innerText
+            );
+        }
+
+        /* EDIT */
+        function editProduct(btn) {
+            const data = btn.closest('tr').children;
+            const newName = prompt("Edit Product Name:", data[0].innerText);
+            const newCat = prompt("Edit Category:", data[1].innerText);
+            const newPrice = prompt("Edit Price:", data[2].innerText);
+            const newStock = prompt("Edit Stock:", data[3].innerText);
+
+            if (newName) data[0].innerText = newName;
+            if (newCat) data[1].innerText = newCat;
+            if (newPrice) data[2].innerText = newPrice;
+            if (newStock) data[3].innerText = newStock;
+        }
+    </script>
+</body>
+</html>

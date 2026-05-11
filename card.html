@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoSphere – Browse Items</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --font:        'Segoe UI','Segoe UI Historic','Segoe UI Emoji',Tahoma,Geneva,Verdana,sans-serif;
+    --green:       #18a118;
+    --green-dark:  #16a34a;
+    --green-light: #dcfce7;
+    --green-mid:   #4ade80;
+    --navy:        #1b2636;
+    --slate:       #1e293b;
+    --muted:       #64748b;
+    --border:      #e2e8f0;
+    --bg:          #f0f2f0;
+    --header-h:    60px;
+    --sidebar-w:   220px;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:var(--font);background:var(--bg);color:var(--slate);margin:0;}
+
+  /* ── HEADER ── */
+  .top-bar{
+    position:fixed;top:0;left:0;right:0;height:var(--header-h);
+    background:var(--green);z-index:1040;
+    display:flex;align-items:center;padding:0 18px;gap:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.14);
+  }
+  .brand{font-size:1.22rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.3px;}
+  .brand i{color:#ffd700;margin-right:5px;}
+  .search-bar{
+    flex:1;max-width:520px;display:flex;border-radius:8px;overflow:hidden;
+    border:2px solid rgba(255,255,255,.35);transition:border-color .2s;
+  }
+  .search-bar:focus-within{border-color:#fff;}
+  .search-bar input{
+    flex:1;padding:7px 14px;border:none;outline:none;
+    font-family:var(--font);font-size:.85rem;color:var(--slate);
+  }
+  .search-bar button{
+    padding:0 16px;background:#fff;border:none;
+    color:var(--green);font-size:.9rem;cursor:pointer;transition:background .18s;
+  }
+  .search-bar button:hover{background:#f0fdf4;}
+  .top-icons{display:flex;align-items:center;gap:6px;margin-left:auto;}
+  .top-icon-btn{
+    background:none;border:none;color:#fff;font-size:1.1rem;
+    padding:8px 10px;border-radius:8px;cursor:pointer;position:relative;
+    transition:background .18s;text-decoration:none;
+  }
+  .top-icon-btn:hover{background:rgba(255,255,255,.15);}
+  .badge-count{
+    position:absolute;top:2px;right:2px;background:#ef4444;color:#fff;
+    font-size:.58rem;font-weight:700;border-radius:50%;
+    width:16px;height:16px;display:flex;align-items:center;justify-content:center;
+    border:1.5px solid var(--green);font-family:var(--font);
+  }
+  .hamburger-btn{
+    background:none;border:none;color:#fff;font-size:1.15rem;
+    padding:8px;border-radius:8px;cursor:pointer;transition:background .18s;
+  }
+  .hamburger-btn:hover{background:rgba(255,255,255,.15);}
+
+  /* login chip in header */
+  .login-chip{
+    display:flex;align-items:center;gap:7px;padding:6px 14px;
+    border-radius:20px;background:rgba(255,255,255,.18);
+    color:#fff;font-family:var(--font);font-size:.78rem;font-weight:600;
+    cursor:pointer;border:1.5px solid rgba(255,255,255,.35);
+    transition:background .18s;white-space:nowrap;
+  }
+  .login-chip:hover{background:rgba(255,255,255,.28);}
+  .user-chip{
+    display:flex;align-items:center;gap:7px;padding:5px 12px;
+    border-radius:20px;background:rgba(255,255,255,.18);
+    color:#fff;font-family:var(--font);font-size:.78rem;font-weight:600;
+    border:1.5px solid rgba(255,255,255,.35);
+  }
+  .user-chip .avatar{
+    width:24px;height:24px;border-radius:50%;background:#ffd700;
+    color:var(--navy);font-size:.72rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar{
+    position:fixed;top:var(--header-h);left:0;
+    width:var(--sidebar-w);height:calc(100vh - var(--header-h));
+    background:var(--navy);z-index:1030;overflow-y:auto;
+    transition:transform .28s ease;display:flex;flex-direction:column;
+    padding:18px 0 20px;
+  }
+  .sidebar-section-label{
+    padding:8px 20px 4px;font-size:.68rem;font-weight:700;
+    color:rgba(255,255,255,.3);text-transform:uppercase;
+    letter-spacing:1px;font-family:var(--font);
+  }
+  .sidebar a{
+    display:flex;align-items:center;gap:10px;padding:10px 20px;
+    color:rgba(255,255,255,.65);text-decoration:none;
+    font-size:.86rem;font-weight:500;font-family:var(--font);transition:all .18s;
+  }
+  .sidebar a i{width:16px;text-align:center;font-size:.82rem;}
+  .sidebar a:hover{color:#fff;background:rgba(255,255,255,.07);padding-left:26px;}
+  .sidebar a.active{color:var(--green-mid);background:rgba(74,222,128,.1);}
+  .sidebar a.active i{color:var(--green-mid);}
+  .sidebar-divider{border:none;border-top:1px solid rgba(255,255,255,.07);margin:10px 0;}
+  .sidebar-filter-box{padding:6px 20px 14px;}
+  .sidebar-filter-box label{
+    font-size:.73rem;font-weight:700;color:rgba(255,255,255,.5);
+    font-family:var(--font);text-transform:uppercase;letter-spacing:.5px;
+    display:block;margin-bottom:8px;
+  }
+  .filter-check{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;}
+  .filter-check input[type=checkbox]{accent-color:var(--green-mid);cursor:pointer;}
+  .filter-check span{font-size:.82rem;color:rgba(255,255,255,.65);font-family:var(--font);}
+  .filter-check:hover span{color:#fff;}
+  .price-range{width:100%;accent-color:var(--green-mid);cursor:pointer;}
+  .price-labels{
+    display:flex;justify-content:space-between;
+    font-size:.72rem;color:rgba(255,255,255,.45);font-family:var(--font);margin-top:6px;
+  }
+  .sidebar-spacer{flex:1;}
+  .sidebar a.logout{color:rgba(248,113,113,.8);margin-top:4px;}
+  .sidebar a.logout:hover{color:#f87171;background:rgba(248,113,113,.08);padding-left:26px;}
+
+  /* ── OVERLAY ── */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1025;}
+  .overlay.show{display:block;}
+
+  /* ── MAIN ── */
+  .main{margin-top:var(--header-h);margin-left:var(--sidebar-w);min-height:calc(100vh - var(--header-h));display:flex;flex-direction:column;}
+  .main-content{flex:1;padding:22px 20px;}
+
+  /* ── TOOLBAR ── */
+  .toolbar-row{
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;margin-bottom:18px;
+  }
+  .toolbar-left h5{font-size:1.1rem;font-weight:700;color:var(--slate);font-family:var(--font);margin:0;}
+  .toolbar-left h5 span{color:var(--green);}
+  .toolbar-left p{font-size:.78rem;color:var(--muted);font-family:var(--font);margin:2px 0 0;}
+  .sort-select{
+    padding:7px 12px;border-radius:8px;border:1.5px solid var(--border);
+    font-family:var(--font);font-size:.82rem;color:var(--slate);
+    background:#fff;cursor:pointer;outline:none;transition:border-color .2s;
+  }
+  .sort-select:focus{border-color:var(--green);}
+
+  /* ── CATEGORY PILLS ── */
+  .cat-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+  .cat-pill{
+    padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);
+    background:#fff;font-family:var(--font);font-size:.76rem;font-weight:600;
+    color:var(--muted);cursor:pointer;transition:all .18s;
+    display:flex;align-items:center;gap:5px;
+  }
+  .cat-pill:hover{background:var(--slate);color:#fff;border-color:var(--slate);}
+  .cat-pill.active{background:var(--green);color:#fff;border-color:var(--green);}
+  .cat-pill i{font-size:.72rem;}
+
+  /* ── PRODUCT CARD ── */
+  .product-card{
+    background:#fff;border-radius:10px;overflow:hidden;position:relative;
+    box-shadow:0 1px 4px rgba(0,0,0,.07);
+    transition:box-shadow .22s,transform .22s;
+    display:flex;flex-direction:column;height:100%;
+    animation:fadeUp .32s ease both;
+  }
+  .product-card:hover{box-shadow:0 8px 28px rgba(0,0,0,.13);transform:translateY(-3px);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .card-img-area{
+    position:relative;height:155px;
+    background:linear-gradient(135deg,#e8f5e9 0%,#f1f8e9 100%);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .card-big-icon{
+    font-size:3.6rem;color:var(--green);opacity:.28;
+    transition:opacity .22s,transform .22s;
+  }
+  .product-card:hover .card-big-icon{opacity:.44;transform:scale(1.1) rotate(-4deg);}
+
+  /* login-lock overlay on image */
+  .lock-overlay{
+    position:absolute;inset:0;background:rgba(0,0,0,.32);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    opacity:0;transition:opacity .22s;z-index:3;cursor:pointer;
+  }
+  .product-card:hover .lock-overlay{opacity:1;}
+  .lock-overlay i{font-size:1.6rem;color:#fff;margin-bottom:6px;}
+  .lock-overlay span{font-size:.72rem;font-weight:700;color:#fff;font-family:var(--font);letter-spacing:.3px;}
+
+  .fav-btn{
+    position:absolute;top:10px;right:10px;width:34px;height:34px;border-radius:50%;
+    background:#fff;border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);font-size:.95rem;color:#c0ccd8;
+    transition:color .18s,transform .18s,box-shadow .18s;z-index:4;
+  }
+  .fav-btn:hover{box-shadow:0 4px 14px rgba(0,0,0,.15);transform:scale(1.1);}
+  .fav-btn.active{color:#ef4444;}
+  .fav-btn.pulse{animation:pulse .3s ease;}
+  @keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1.1);}}
+
+  .card-badge{
+    position:absolute;top:10px;left:10px;padding:3px 9px;border-radius:20px;
+    font-size:.63rem;font-weight:700;font-family:var(--font);letter-spacing:.3px;z-index:2;
+  }
+  .badge-new{background:#dcfce7;color:#14532d;}
+  .badge-low{background:#fef3c7;color:#78350f;}
+  .badge-hot{background:#fee2e2;color:#991b1b;}
+
+  .card-body-custom{padding:12px 13px 13px;display:flex;flex-direction:column;flex:1;}
+  .seller-name{font-size:.68rem;color:var(--green-dark);font-family:var(--font);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+  .item-title{font-size:.9rem;font-weight:700;color:var(--slate);font-family:var(--font);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .item-desc{font-size:.74rem;color:var(--muted);font-family:var(--font);margin-bottom:8px;line-height:1.45;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .star-row{display:flex;align-items:center;gap:4px;margin-bottom:7px;}
+  .stars{color:#f59e0b;font-size:.7rem;letter-spacing:1px;}
+  .rating-count{font-size:.68rem;color:#2563eb;font-family:var(--font);text-decoration:underline;cursor:pointer;}
+  .price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:3px;}
+  .price-main{font-size:1.12rem;font-weight:700;color:var(--slate);font-family:var(--font);}
+  .price-unit{font-size:.7rem;color:var(--muted);font-family:var(--font);}
+  .price-old{font-size:.76rem;color:#94a3b8;font-family:var(--font);text-decoration:line-through;}
+  .price-save{font-size:.7rem;color:#dc2626;font-weight:700;font-family:var(--font);margin-bottom:8px;}
+  .meta-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+  .meta-pill{
+    padding:2px 7px;border-radius:4px;font-size:.66rem;font-weight:600;
+    font-family:var(--font);background:#f1f5f9;color:var(--muted);
+    display:flex;align-items:center;gap:3px;
+  }
+  .meta-pill i{font-size:.6rem;}
+
+  /* qty */
+  .qty-row{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+  .qty-label{font-size:.7rem;font-weight:600;color:var(--muted);font-family:var(--font);white-space:nowrap;}
+  .qty-ctrl{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:7px;overflow:hidden;}
+  .qty-btn{
+    background:#f8fafc;border:none;cursor:pointer;width:28px;height:28px;
+    font-size:.82rem;color:var(--slate);transition:background .15s;
+    display:flex;align-items:center;justify-content:center;font-family:var(--font);
+  }
+  .qty-btn:hover{background:#e2e8f0;}
+  .qty-val{width:34px;text-align:center;font-size:.8rem;font-weight:700;color:var(--slate);font-family:var(--font);border:none;outline:none;background:#fff;padding:0;}
+
+  /* action buttons */
+  .card-actions{display:flex;gap:7px;}
+  .btn-cart{
+    flex:1;padding:9px 0;border-radius:8px;background:var(--green);color:#fff;
+    border:none;font-family:var(--font);font-size:.78rem;font-weight:700;cursor:pointer;
+    transition:background .18s,transform .15s;display:flex;align-items:center;justify-content:center;gap:5px;
+  }
+  .btn-cart:hover{background:var(--green-dark);transform:translateY(-1px);}
+  .btn-cart.added{background:#15803d;}
+  .btn-buy{
+    flex:1;padding:9px 0;border-radius:8px;background:#f59e0b;color:#fff;border:none;
+    font-family:var(--font);font-size:.78rem;font-weight:700;cursor:pointer;
+    transition:background .18s,transform .15s;
+  }
+  .btn-buy:hover{background:#d97706;transform:translateY(-1px);}
+
+  /* guest lock state on buttons */
+  .btn-cart.locked,.btn-buy.locked{
+    background:#e2e8f0;color:#94a3b8;cursor:pointer;
+  }
+  .btn-cart.locked:hover,.btn-buy.locked:hover{background:#cbd5e1;transform:none;}
+
+  /* ── LOGIN MODAL ── */
+  .login-modal-bg{
+    display:none;position:fixed;inset:0;
+    background:rgba(0,0,0,.5);z-index:3000;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .login-modal-bg.show{display:flex;}
+  .login-modal{
+    background:#fff;border-radius:16px;width:100%;max-width:420px;
+    overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.22);
+    animation:modalIn .22s ease;
+  }
+  @keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .lm-header{
+    background:linear-gradient(135deg,var(--green) 0%,#1a8c1a 100%);
+    padding:28px 28px 24px;text-align:center;
+  }
+  .lm-icon{
+    width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.6rem;color:#fff;margin:0 auto 12px;
+  }
+  .lm-title{font-size:1.15rem;font-weight:700;color:#fff;font-family:var(--font);margin-bottom:4px;}
+  .lm-sub{font-size:.8rem;color:rgba(255,255,255,.8);font-family:var(--font);}
+  .lm-body{padding:24px 28px 28px;}
+  .lm-form-group{margin-bottom:14px;}
+  .lm-label{
+    font-size:.72rem;font-weight:700;color:var(--muted);font-family:var(--font);
+    text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;
+  }
+  .lm-input{
+    width:100%;padding:10px 14px;border-radius:8px;border:1.5px solid var(--border);
+    font-family:var(--font);font-size:.88rem;color:var(--slate);
+    background:#fafafa;outline:none;transition:border-color .2s,background .2s;
+  }
+  .lm-input:focus{border-color:var(--green);background:#fff;}
+  .lm-input-wrap{position:relative;}
+  .lm-input-wrap .lm-input{padding-right:42px;}
+  .lm-toggle-pw{
+    position:absolute;right:13px;top:50%;transform:translateY(-50%);
+    background:none;border:none;color:var(--muted);cursor:pointer;font-size:.88rem;
+    transition:color .18s;padding:0;
+  }
+  .lm-toggle-pw:hover{color:var(--slate);}
+  .lm-remember{display:flex;align-items:center;gap:8px;margin-bottom:18px;cursor:pointer;}
+  .lm-remember input{accent-color:var(--green);cursor:pointer;}
+  .lm-remember span{font-size:.82rem;color:var(--muted);font-family:var(--font);}
+  .btn-login{
+    width:100%;padding:12px;border-radius:9px;background:var(--green);
+    color:#fff;border:none;font-family:var(--font);font-size:.9rem;font-weight:700;
+    cursor:pointer;transition:background .18s,transform .15s;display:flex;
+    align-items:center;justify-content:center;gap:8px;
+  }
+  .btn-login:hover{background:var(--green-dark);transform:translateY(-1px);}
+  .lm-divider{
+    display:flex;align-items:center;gap:12px;margin:18px 0;
+  }
+  .lm-divider span{font-size:.72rem;color:#c0ccd8;font-family:var(--font);white-space:nowrap;}
+  .lm-divider::before,.lm-divider::after{content:'';flex:1;border-top:1px solid var(--border);}
+  .lm-guest{
+    width:100%;padding:10px;border-radius:9px;border:1.5px solid var(--border);
+    background:#fff;color:var(--muted);font-family:var(--font);font-size:.84rem;
+    font-weight:600;cursor:pointer;transition:all .18s;
+  }
+  .lm-guest:hover{border-color:var(--slate);color:var(--slate);}
+  .lm-footer-text{
+    text-align:center;margin-top:14px;font-size:.76rem;
+    color:var(--muted);font-family:var(--font);
+  }
+  .lm-footer-text a{color:var(--green);text-decoration:none;font-weight:600;}
+  .lm-footer-text a:hover{text-decoration:underline;}
+  .lm-close{
+    position:absolute;top:14px;right:14px;background:rgba(255,255,255,.2);
+    border:none;color:#fff;width:30px;height:30px;border-radius:50%;
+    cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;
+    transition:background .18s;
+  }
+  .lm-close:hover{background:rgba(255,255,255,.35);}
+  .lm-header{position:relative;}
+
+  /* error shake */
+  .input-error{border-color:#ef4444 !important;animation:shake .3s ease;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+  .error-msg{font-size:.72rem;color:#ef4444;font-family:var(--font);margin-top:4px;display:none;}
+  .error-msg.show{display:block;}
+
+  /* ── CART DRAWER ── */
+  .cart-drawer{
+    position:fixed;top:0;right:0;width:360px;height:100vh;
+    background:#fff;z-index:2000;box-shadow:-6px 0 30px rgba(0,0,0,.15);
+    transform:translateX(100%);transition:transform .3s ease;display:flex;flex-direction:column;
+  }
+  .cart-drawer.open{transform:translateX(0);}
+  .drawer-header{
+    padding:18px 20px;background:var(--green);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .drawer-title{font-size:1rem;font-weight:700;font-family:var(--font);}
+  .drawer-close{
+    background:none;border:none;color:#fff;font-size:1.1rem;cursor:pointer;
+    padding:4px 8px;border-radius:6px;transition:background .18s;
+  }
+  .drawer-close:hover{background:rgba(255,255,255,.2);}
+  .drawer-body{flex:1;overflow-y:auto;padding:16px;}
+  .cart-empty{text-align:center;padding:60px 20px;color:var(--muted);}
+  .cart-empty i{font-size:2.8rem;margin-bottom:12px;display:block;opacity:.3;}
+  .cart-empty p{font-family:var(--font);font-size:.88rem;}
+  .cart-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f1f5f9;align-items:flex-start;}
+  .cart-item:last-child{border-bottom:none;}
+  .ci-icon{width:48px;height:48px;border-radius:8px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:var(--green-dark);flex-shrink:0;}
+  .ci-info{flex:1;min-width:0;}
+  .ci-name{font-size:.82rem;font-weight:700;color:var(--slate);font-family:var(--font);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;}
+  .ci-seller{font-size:.7rem;color:var(--muted);font-family:var(--font);margin-bottom:6px;}
+  .ci-bottom{display:flex;align-items:center;justify-content:space-between;}
+  .ci-price{font-size:.88rem;font-weight:700;color:var(--green-dark);font-family:var(--font);}
+  .ci-qty-ctrl{display:flex;align-items:center;gap:6px;}
+  .ci-qty-btn{width:24px;height:24px;border-radius:5px;border:1.5px solid var(--border);background:#f8fafc;cursor:pointer;font-size:.8rem;display:flex;align-items:center;justify-content:center;color:var(--slate);transition:background .15s;}
+  .ci-qty-btn:hover{background:#e2e8f0;}
+  .ci-qty-val{font-size:.82rem;font-weight:700;color:var(--slate);font-family:var(--font);min-width:30px;text-align:center;}
+  .ci-remove{background:none;border:none;color:#ef4444;font-size:.78rem;cursor:pointer;padding:2px 6px;border-radius:4px;font-family:var(--font);transition:background .15s;}
+  .ci-remove:hover{background:#fee2e2;}
+  .drawer-footer{padding:16px 20px;border-top:1px solid var(--border);background:#fafafa;}
+  .cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .cart-total-label{font-size:.88rem;font-weight:600;color:var(--muted);font-family:var(--font);}
+  .cart-total-val{font-size:1.15rem;font-weight:700;color:var(--slate);font-family:var(--font);}
+  .btn-checkout{width:100%;padding:12px;border-radius:9px;background:var(--green);color:#fff;border:none;font-family:var(--font);font-size:.9rem;font-weight:700;cursor:pointer;transition:background .18s,transform .15s;}
+  .btn-checkout:hover{background:var(--green-dark);transform:translateY(-1px);}
+
+  /* ── FAV SECTION ── */
+  .fav-section{margin-top:36px;}
+  .section-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  .section-header h6{font-size:.95rem;font-weight:700;color:var(--slate);font-family:var(--font);margin:0;}
+  .section-header h6 span{color:var(--green);}
+  .section-badge{background:#fee2e2;color:#dc2626;font-size:.68rem;font-weight:700;font-family:var(--font);padding:2px 8px;border-radius:20px;}
+
+  /* ── TOAST ── */
+  .toast-wrap{position:fixed;bottom:24px;right:24px;z-index:4000;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+  .toast-item{
+    background:var(--navy);color:#fff;padding:11px 16px;border-radius:9px;
+    font-family:var(--font);font-size:.82rem;font-weight:500;
+    box-shadow:0 6px 20px rgba(0,0,0,.18);display:flex;align-items:center;gap:8px;
+    transform:translateX(120%);transition:transform .3s ease;
+  }
+  .toast-item.show{transform:translateX(0);}
+  .toast-item i{color:var(--green-mid);}
+  .toast-item.red i{color:#f87171;}
+  .toast-item.warn i{color:#fbbf24;}
+
+  /* ── FOOTER ── */
+  footer{text-align:center;padding:14px;background:#161c22;color:rgba(255,255,255,.4);font-size:.78rem;font-family:var(--font);}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:768px){
+    .sidebar{transform:translateX(-100%);}
+    .sidebar.open{transform:translateX(0);box-shadow:8px 0 30px rgba(0,0,0,.2);}
+    .main{margin-left:0;}
+    .main-content{padding:16px 12px;}
+    .search-bar{display:none;}
+    .cart-drawer{width:100%;}
+  }
+  @media(max-width:480px){
+    .cat-pill{padding:5px 10px;font-size:.7rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="top-bar">
+  <button class="hamburger-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+  <a href="#" class="brand ms-1"><i class="fas fa-leaf"></i> EcoSphere</a>
+  <div class="search-bar ms-3">
+    <input type="text" id="globalSearch" placeholder="Search recyclables…" oninput="applyAll()">
+    <button><i class="fas fa-search"></i></button>
+  </div>
+  <div class="top-icons">
+    <!-- shown when logged in -->
+    <button class="top-icon-btn" id="cartHeaderBtn" onclick="openCart()" title="Cart" style="display:none">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="badge-count" id="cartCount">0</span>
+    </button>
+    <button class="top-icon-btn" id="favHeaderBtn" onclick="scrollToFavs()" title="Favourites" style="display:none">
+      <i class="fas fa-heart"></i>
+      <span class="badge-count" id="favCount" style="background:#ef4444">0</span>
+    </button>
+    <!-- guest login chip -->
+    <div class="login-chip" id="loginChip" onclick="openLoginModal()">
+      <i class="fas fa-sign-in-alt"></i> Sign In
+    </div>
+    <!-- logged in user chip -->
+    <div class="user-chip" id="userChip" style="display:none">
+      <div class="avatar" id="userAvatar">R</div>
+      <span id="userName">Rahul</span>
+    </div>
+  </div>
+</header>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section-label">Navigation</div>
+  <a href="#"><i class="fas fa-home"></i> Home</a>
+  <a href="#" class="active"><i class="fas fa-store"></i> Browse Items</a>
+  <a href="#" onclick="requireLogin(()=>{})"><i class="fas fa-shopping-cart"></i> My Orders</a>
+  <a href="#" onclick="scrollToFavs()"><i class="fas fa-heart"></i> Favourites</a>
+  <hr class="sidebar-divider">
+  <div class="sidebar-section-label">Filter by Category</div>
+  <div class="sidebar-filter-box">
+    <label>Material Type</label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Plastic</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Paper</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Metal</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Glass</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>E-Waste</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Cardboard</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Textile</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Rubber</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Wood</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Battery</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Oil</span></label>
+    <label class="filter-check"><input type="checkbox" checked onchange="applyAll()"><span>Organic</span></label>
+  </div>
+  <hr class="sidebar-divider">
+  <div class="sidebar-filter-box">
+    <label>Max Price (₹/kg): <strong id="priceVal" style="color:var(--green-mid)">150</strong></label>
+    <input type="range" class="price-range" id="priceRange" min="1" max="150" value="150"
+           oninput="document.getElementById('priceVal').textContent=this.value;applyAll()">
+    <div class="price-labels"><span>₹1</span><span>₹150</span></div>
+  </div>
+  <div class="sidebar-spacer"></div>
+  <a href="index.html" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+<div class="main-content">
+
+  <!-- login notice banner -->
+  <div id="loginBanner" class="alert mb-3 py-2 px-3 d-flex align-items-center justify-content-between"
+       style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:10px;font-family:var(--font);font-size:.82rem;color:#78350f;">
+    <span><i class="fas fa-lock me-2" style="color:#f59e0b"></i>
+      <strong>Sign in</strong> to add items to cart, save favourites, and place orders.</span>
+    <button onclick="openLoginModal()" style="background:#f59e0b;border:none;color:#fff;border-radius:7px;padding:5px 14px;font-family:var(--font);font-size:.78rem;font-weight:700;cursor:pointer;">Sign In</button>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar-row">
+    <div class="toolbar-left">
+      <h5>Browse <span>Recyclables</span></h5>
+      <p id="resultCount">Showing all items</p>
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="applyAll()">
+      <option value="default">Sort: Featured</option>
+      <option value="price-asc">Price: Low → High</option>
+      <option value="price-desc">Price: High → Low</option>
+      <option value="stock">Most Stock</option>
+      <option value="rating">Top Rated</option>
+    </select>
+  </div>
+
+  <!-- CATEGORY PILLS -->
+  <div class="cat-pills" id="catPills">
+    <button class="cat-pill active" data-cat="all"       onclick="setCat(this)"><i class="fas fa-th"></i> All</button>
+    <button class="cat-pill" data-cat="Plastic"          onclick="setCat(this)"><i class="fas fa-recycle"></i> Plastic</button>
+    <button class="cat-pill" data-cat="Paper"            onclick="setCat(this)"><i class="fas fa-newspaper"></i> Paper</button>
+    <button class="cat-pill" data-cat="Metal"            onclick="setCat(this)"><i class="fas fa-cog"></i> Metal</button>
+    <button class="cat-pill" data-cat="Glass"            onclick="setCat(this)"><i class="fas fa-wine-bottle"></i> Glass</button>
+    <button class="cat-pill" data-cat="E-Waste"          onclick="setCat(this)"><i class="fas fa-microchip"></i> E-Waste</button>
+    <button class="cat-pill" data-cat="Cardboard"        onclick="setCat(this)"><i class="fas fa-box"></i> Cardboard</button>
+    <button class="cat-pill" data-cat="Textile"          onclick="setCat(this)"><i class="fas fa-tshirt"></i> Textile</button>
+    <button class="cat-pill" data-cat="Rubber"           onclick="setCat(this)"><i class="fas fa-circle"></i> Rubber</button>
+    <button class="cat-pill" data-cat="Wood"             onclick="setCat(this)"><i class="fas fa-tree"></i> Wood</button>
+    <button class="cat-pill" data-cat="Battery"          onclick="setCat(this)"><i class="fas fa-battery-half"></i> Battery</button>
+    <button class="cat-pill" data-cat="Oil"              onclick="setCat(this)"><i class="fas fa-oil-can"></i> Oil</button>
+    <button class="cat-pill" data-cat="Organic"          onclick="setCat(this)"><i class="fas fa-seedling"></i> Organic</button>
+  </div>
+
+  <!-- ITEMS GRID -->
+  <div class="row g-3" id="itemsGrid"></div>
+
+  <!-- FAVOURITES SECTION -->
+  <div class="fav-section" id="favSection" style="display:none">
+    <div class="section-header">
+      <i class="fas fa-heart" style="color:#ef4444;font-size:1.1rem;"></i>
+      <h6>Your <span>Favourites</span></h6>
+      <span class="section-badge" id="favBadge">0</span>
+    </div>
+    <div class="row g-3" id="favGrid"></div>
+  </div>
+
+</div>
+<footer>© 2026 EcoSphere. All rights reserved.</footer>
+</div>
+
+<!-- ── CART DRAWER ── -->
+<div class="cart-drawer" id="cartDrawer">
+  <div class="drawer-header">
+    <div class="drawer-title"><i class="fas fa-shopping-cart me-2"></i>Your Cart</div>
+    <button class="drawer-close" onclick="closeCart()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-footer" id="cartFooter" style="display:none">
+    <div class="cart-total-row">
+      <div class="cart-total-label">Subtotal</div>
+      <div class="cart-total-val" id="cartTotal">₹0</div>
+    </div>
+    <button class="btn-checkout"><i class="fas fa-bolt me-2"></i>Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- ── LOGIN MODAL ── -->
+<div class="login-modal-bg" id="loginModalBg">
+  <div class="login-modal">
+    <div class="lm-header">
+      <button class="lm-close" onclick="closeLoginModal()"><i class="fas fa-times"></i></button>
+      <div class="lm-icon"><i class="fas fa-leaf"></i></div>
+      <div class="lm-title">Welcome to EcoSphere</div>
+      <div class="lm-sub">Sign in to shop recyclables, save favourites & track orders</div>
+    </div>
+    <div class="lm-body">
+      <div class="lm-form-group">
+        <label class="lm-label">Email Address</label>
+        <input class="lm-input" id="lm-email" type="email" placeholder="you@example.com"
+               oninput="clearErr('lm-email','emailErr')">
+        <div class="error-msg" id="emailErr">Please enter a valid email.</div>
+      </div>
+      <div class="lm-form-group">
+        <label class="lm-label">Password</label>
+        <div class="lm-input-wrap">
+          <input class="lm-input" id="lm-pw" type="password" placeholder="••••••••"
+                 oninput="clearErr('lm-pw','pwErr')">
+          <button class="lm-toggle-pw" onclick="togglePw()" type="button" tabindex="-1">
+            <i class="fas fa-eye" id="pwEyeIcon"></i>
+          </button>
+        </div>
+        <div class="error-msg" id="pwErr">Password must be at least 6 characters.</div>
+      </div>
+      <label class="lm-remember">
+        <input type="checkbox" id="lm-remember">
+        <span>Remember me</span>
+      </label>
+      <button class="btn-login" onclick="doLogin()">
+        <i class="fas fa-sign-in-alt"></i> Sign In
+      </button>
+      <div class="lm-divider"><span>or</span></div>
+      <button class="lm-guest" onclick="closeLoginModal()">
+        <i class="fas fa-eye me-2"></i>Continue Browsing as Guest
+      </button>
+      <div class="lm-footer-text">
+        New to EcoSphere? <a href="#">Create an account</a> &nbsp;·&nbsp; <a href="#">Forgot password?</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+/* ──────────────────── DATA ──────────────────── */
+const ICONS={
+  Plastic:'fa-recycle',Paper:'fa-newspaper',Metal:'fa-cog',
+  Glass:'fa-wine-bottle','E-Waste':'fa-microchip',Cardboard:'fa-box',
+  Textile:'fa-tshirt',Rubber:'fa-circle',Wood:'fa-tree',
+  Battery:'fa-battery-half',Oil:'fa-oil-can',Organic:'fa-seedling',Other:'fa-leaf'
+};
+
+const items=[
+  // Plastic
+  {id:1, name:"PET Plastic Bottles",    cat:"Plastic",   price:12,oldPrice:16,stock:350,minorder:20, desc:"Clean, sorted PET bottles. No caps or labels.",          seller:"GreenKart Recyclers", rating:4.5,reviews:128,badge:"hot"},
+  {id:2, name:"HDPE Plastic Scrap",     cat:"Plastic",   price:10,oldPrice:13,stock:280,minorder:25, desc:"HDPE containers and bottle caps, sorted by grade.",       seller:"GreenKart Recyclers", rating:4.4,reviews:91, badge:null},
+  {id:3, name:"PVC Pipe Waste",         cat:"Plastic",   price:8, oldPrice:11,stock:160,minorder:20, desc:"Off-cut PVC pipes and fittings from construction sites.", seller:"BuildWaste Co.",      rating:4.0,reviews:42, badge:"new"},
+  // Paper
+  {id:4, name:"Old Newspapers",         cat:"Paper",     price:8, oldPrice:10,stock:180,minorder:10, desc:"Bundled old newspapers, dry & sorted by weight.",         seller:"PaperCycle Co.",      rating:4.2,reviews:84, badge:"new"},
+  {id:5, name:"Office Paper Waste",     cat:"Paper",     price:9, oldPrice:11,stock:150,minorder:10, desc:"Office printout paper, shredded or stacked neatly.",      seller:"PaperCycle Co.",      rating:4.0,reviews:38, badge:null},
+  {id:6, name:"Magazines & Catalogs",   cat:"Paper",     price:7, oldPrice:9, stock:90, minorder:10, desc:"Mixed glossy magazines and product catalogs.",            seller:"PaperCycle Co.",      rating:3.8,reviews:22, badge:null},
+  // Metal
+  {id:7, name:"Iron Scrap",             cat:"Metal",     price:28,oldPrice:32,stock:600,minorder:50, desc:"Heavy iron scrap from industrial sources, sorted.",       seller:"MetalHub India",      rating:4.7,reviews:212,badge:null},
+  {id:8, name:"Aluminium Cans",         cat:"Metal",     price:42,oldPrice:50,stock:210,minorder:20, desc:"Crushed aluminium beverage cans, sorted by grade.",       seller:"MetalHub India",      rating:4.8,reviews:176,badge:"hot"},
+  {id:9, name:"Copper Wire Scrap",      cat:"Metal",     price:72,oldPrice:85,stock:60, minorder:10, desc:"Stripped copper wire from electrical equipment.",         seller:"MetalHub India",      rating:4.9,reviews:143,badge:"hot"},
+  {id:10,name:"Stainless Steel Scrap",  cat:"Metal",     price:35,oldPrice:42,stock:300,minorder:30, desc:"SS 304/316 offcuts from kitchen and industrial use.",     seller:"MetalHub India",      rating:4.6,reviews:88, badge:null},
+  // Glass
+  {id:11,name:"Clear Glass Bottles",    cat:"Glass",     price:6, oldPrice:8, stock:90, minorder:15, desc:"Sorted clear glass, washed and dried.",                  seller:"GlassCraft Store",    rating:3.9,reviews:46, badge:"low"},
+  {id:12,name:"Brown Glass Bottles",    cat:"Glass",     price:5, oldPrice:6, stock:130,minorder:15, desc:"Brown beer and sauce bottles, sorted by colour.",         seller:"GlassCraft Store",    rating:3.8,reviews:29, badge:null},
+  {id:13,name:"Broken Glass Cullet",    cat:"Glass",     price:4, oldPrice:5, stock:400,minorder:50, desc:"Mixed colour crushed glass cullet, ready for smelting.",  seller:"GlassCraft Store",    rating:4.1,reviews:34, badge:"new"},
+  // E-Waste
+  {id:14,name:"Mixed E-Waste",          cat:"E-Waste",   price:55,oldPrice:65,stock:45, minorder:5,  desc:"Circuit boards, cables, small appliances.",              seller:"TechScrap Zone",      rating:4.6,reviews:97, badge:"hot"},
+  {id:15,name:"Old Mobile Phones",      cat:"E-Waste",   price:80,oldPrice:95,stock:30, minorder:2,  desc:"Non-functional smartphones, data wiped, sorted.",        seller:"TechScrap Zone",      rating:4.7,reviews:61, badge:"hot"},
+  {id:16,name:"CRT Monitor Scrap",      cat:"E-Waste",   price:18,oldPrice:22,stock:80, minorder:5,  desc:"Old CRT monitors from offices and homes.",               seller:"TechScrap Zone",      rating:3.7,reviews:18, badge:null},
+  // Cardboard
+  {id:17,name:"Corrugated Cardboard",   cat:"Cardboard", price:7, oldPrice:9, stock:200,minorder:10, desc:"Flat & corrugated boxes, neatly bundled and tied.",       seller:"BoxRecycle Ltd",      rating:4.1,reviews:63, badge:"new"},
+  {id:18,name:"Kraft Paper Rolls",      cat:"Cardboard", price:9, oldPrice:11,stock:110,minorder:10, desc:"Used kraft paper rolls from packaging industries.",       seller:"BoxRecycle Ltd",      rating:4.3,reviews:47, badge:null},
+  // Textile
+  {id:19,name:"Used Clothing Mix",      cat:"Textile",   price:5, oldPrice:7, stock:320,minorder:10, desc:"Mixed used clothing and fabric scraps, sorted.",          seller:"ClothCycle NGO",      rating:4.3,reviews:55, badge:null},
+  {id:20,name:"Denim Fabric Waste",     cat:"Textile",   price:8, oldPrice:10,stock:180,minorder:15, desc:"Denim offcuts from garment factories.",                  seller:"ClothCycle NGO",      rating:4.5,reviews:39, badge:"new"},
+  {id:21,name:"Industrial Rags",        cat:"Textile",   price:4, oldPrice:5, stock:500,minorder:20, desc:"Cotton rags from industrial cleaning operations.",        seller:"ClothCycle NGO",      rating:3.9,reviews:27, badge:null},
+  // Rubber
+  {id:22,name:"Used Tyres",             cat:"Rubber",    price:6, oldPrice:8, stock:240,minorder:10, desc:"Used car and truck tyres, suitable for crumbing.",        seller:"RubberRenew Co.",     rating:4.2,reviews:73, badge:null},
+  {id:23,name:"Rubber Hose Scrap",      cat:"Rubber",    price:9, oldPrice:12,stock:130,minorder:15, desc:"Garden and industrial rubber hose offcuts.",              seller:"RubberRenew Co.",     rating:4.0,reviews:31, badge:"new"},
+  {id:24,name:"Shoe Sole Waste",        cat:"Rubber",    price:7, oldPrice:9, stock:90, minorder:10, desc:"EVA and rubber shoe sole trimmings from factories.",      seller:"RubberRenew Co.",     rating:3.8,reviews:19, badge:null},
+  // Wood
+  {id:25,name:"Pallet Wood Scrap",      cat:"Wood",      price:5, oldPrice:7, stock:500,minorder:50, desc:"Dismantled wooden pallets, nails removed.",               seller:"WoodWaste Hub",       rating:4.1,reviews:58, badge:null},
+  {id:26,name:"Sawmill Sawdust",        cat:"Wood",      price:3, oldPrice:4, stock:1000,minorder:100,desc:"Fine sawdust from hardwood and softwood milling.",       seller:"WoodWaste Hub",       rating:4.0,reviews:44, badge:"new"},
+  {id:27,name:"Furniture Wood Offcuts", cat:"Wood",      price:8, oldPrice:10,stock:200,minorder:20, desc:"Hardwood offcuts from furniture manufacturing.",           seller:"WoodWaste Hub",       rating:4.4,reviews:36, badge:null},
+  // Battery
+  {id:28,name:"Lead-Acid Batteries",    cat:"Battery",   price:45,oldPrice:55,stock:80, minorder:5,  desc:"Used car and UPS lead-acid batteries, drained.",          seller:"BatteryBack India",   rating:4.5,reviews:82, badge:"hot"},
+  {id:29,name:"Lithium-Ion Cells",      cat:"Battery",   price:90,oldPrice:110,stock:40,minorder:2,  desc:"Discharged li-ion cells from laptops and power tools.",   seller:"BatteryBack India",   rating:4.8,reviews:64, badge:"hot"},
+  {id:30,name:"Dry Cell Battery Lot",   cat:"Battery",   price:12,oldPrice:15,stock:200,minorder:10, desc:"Used AA/AAA/C-size alkaline cells, sorted by size.",       seller:"BatteryBack India",   rating:3.9,reviews:28, badge:null},
+  // Oil
+  {id:31,name:"Used Engine Oil",        cat:"Oil",       price:18,oldPrice:22,stock:500,minorder:50, desc:"Used engine oil in sealed drums, ready for re-refining.",  seller:"OilReclaim Co.",      rating:4.3,reviews:67, badge:null},
+  {id:32,name:"Cooking Oil Waste",      cat:"Oil",       price:22,oldPrice:28,stock:300,minorder:50, desc:"Used cooking oil from restaurants, for biodiesel.",        seller:"OilReclaim Co.",      rating:4.6,reviews:53, badge:"hot"},
+  {id:33,name:"Hydraulic Oil Scrap",    cat:"Oil",       price:15,oldPrice:19,stock:200,minorder:50, desc:"Spent hydraulic oil from heavy machinery.",               seller:"OilReclaim Co.",      rating:4.1,reviews:24, badge:null},
+  // Organic
+  {id:34,name:"Vegetable Peel Waste",   cat:"Organic",   price:2, oldPrice:3, stock:800,minorder:100,desc:"Vegetable peels from market and restaurant kitchens.",     seller:"GreenCompost Farm",   rating:4.2,reviews:41, badge:"new"},
+  {id:35,name:"Dry Leaf & Garden Waste",cat:"Organic",   price:1, oldPrice:2, stock:2000,minorder:200,desc:"Dry leaves, twigs and garden trimmings for composting.",  seller:"GreenCompost Farm",   rating:4.0,reviews:33, badge:null},
+  {id:36,name:"Fruit Pulp Residue",     cat:"Organic",   price:3, oldPrice:4, stock:600,minorder:50, desc:"Fruit pulp from juice factories, ideal for biogas.",       seller:"GreenCompost Farm",   rating:4.4,reviews:52, badge:"hot"},
+];
+
+/* ──────────────────── STATE ──────────────────── */
+let isLoggedIn = false;
+let currentUser = null;
+let cart = {};
+let favs = new Set();
+let activeCat = 'all';
+let pendingAction = null; // callback after login
+
+/* ──────────────────── AUTH ──────────────────── */
+// Demo credentials
+const DEMO = { email:'recycler@eco.com', password:'eco123', name:'Rahul Verma' };
+
+function requireLogin(cb) {
+  if (isLoggedIn) { cb(); return; }
+  pendingAction = cb;
+  openLoginModal();
+}
+
+function openLoginModal() {
+  document.getElementById('loginModalBg').classList.add('show');
+}
+function closeLoginModal() {
+  document.getElementById('loginModalBg').classList.remove('show');
+  pendingAction = null;
+}
+
+function doLogin() {
+  const email = document.getElementById('lm-email').value.trim();
+  const pw    = document.getElementById('lm-pw').value;
+  let valid   = true;
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('lm-email').classList.add('input-error');
+    document.getElementById('emailErr').classList.add('show');
+    valid = false;
+  }
+  if (!pw || pw.length < 6) {
+    document.getElementById('lm-pw').classList.add('input-error');
+    document.getElementById('pwErr').classList.add('show');
+    valid = false;
+  }
+  if (!valid) return;
+
+  // Accept demo creds or any valid-format email+6char pw
+  const uname = (email === DEMO.email && pw === DEMO.password) ? DEMO.name : email.split('@')[0];
+  loginUser(uname);
+}
+
+function loginUser(name) {
+  isLoggedIn = true;
+  currentUser = name;
+
+  // update UI
+  document.getElementById('loginChip').style.display    = 'none';
+  document.getElementById('userChip').style.display     = 'flex';
+  document.getElementById('cartHeaderBtn').style.display= '';
+  document.getElementById('favHeaderBtn').style.display = '';
+  document.getElementById('userName').textContent       = name.split(' ')[0];
+  document.getElementById('userAvatar').textContent     = name[0].toUpperCase();
+  document.getElementById('loginBanner').style.display  = 'none';
+  document.querySelector('.sidebar a.logout').textContent = '';
+  document.querySelector('.sidebar a.logout').innerHTML  = '<i class="fas fa-sign-out-alt"></i> Sign Out';
+  document.querySelector('.sidebar a.logout').onclick = logoutUser;
+
+  closeLoginModal();
+  renderGrid();
+  showToast(`Welcome back, ${name.split(' ')[0]}! 🌿`, 'green');
+
+  if (pendingAction) { pendingAction(); pendingAction = null; }
+}
+
+function logoutUser() {
+  isLoggedIn = false; currentUser = null;
+  cart = {}; favs = new Set();
+  document.getElementById('loginChip').style.display    = '';
+  document.getElementById('userChip').style.display     = 'none';
+  document.getElementById('cartHeaderBtn').style.display= 'none';
+  document.getElementById('favHeaderBtn').style.display = 'none';
+  document.getElementById('loginBanner').style.display  = '';
+  updateCartCount(); updateFavCount();
+  renderGrid(); renderFavSection();
+  showToast('You have been signed out.', 'warn');
+}
+
+function clearErr(inputId, errId) {
+  document.getElementById(inputId).classList.remove('input-error');
+  document.getElementById(errId).classList.remove('show');
+}
+function togglePw() {
+  const inp  = document.getElementById('lm-pw');
+  const icon = document.getElementById('pwEyeIcon');
+  if (inp.type==='password') { inp.type='text';  icon.className='fas fa-eye-slash'; }
+  else                       { inp.type='password'; icon.className='fas fa-eye'; }
+}
+
+/* ──────────────────── STARS ──────────────────── */
+function starsHTML(r){
+  let h='';
+  for(let i=1;i<=5;i++){
+    if(r>=i)       h+='<i class="fas fa-star"></i>';
+    else if(r>=i-.5)h+='<i class="fas fa-star-half-alt"></i>';
+    else            h+='<i class="far fa-star"></i>';
+  }
+  return h;
+}
+
+/* ──────────────────── CARD HTML ──────────────────── */
+function cardHTML(item, idx){
+  const icon    = ICONS[item.cat]||'fa-leaf';
+  const isFav   = favs.has(item.id);
+  const saving  = item.oldPrice - item.price;
+  const savePct = Math.round((saving/item.oldPrice)*100);
+  const badgeMap = {new:'badge-new',low:'badge-low',hot:'badge-hot'};
+  const badgeTxt = {new:'New',low:'Low Stock',hot:'🔥 Hot'};
+  const badgeHTML = item.badge?`<span class="card-badge ${badgeMap[item.badge]}">${badgeTxt[item.badge]}</span>`:'';
+
+  const lockOverlay = !isLoggedIn ? `
+    <div class="lock-overlay" onclick="openLoginModal()">
+      <i class="fas fa-lock"></i>
+      <span>Sign in to add</span>
+    </div>` : '';
+
+  const favClass = isFav ? 'active' : '';
+  const favIcon  = isFav ? 'fas fa-heart' : 'far fa-heart';
+
+  const cartBtnClass = !isLoggedIn ? 'btn-cart locked' : 'btn-cart';
+  const buyBtnClass  = !isLoggedIn ? 'btn-buy locked'  : 'btn-buy';
+
+  return `
+  <div class="col-6 col-md-4 col-lg-3" style="animation-delay:${idx*0.035}s">
+    <div class="product-card">
+      <div class="card-img-area">
+        ${badgeHTML}
+        <i class="fas ${icon} card-big-icon"></i>
+        ${lockOverlay}
+        <button class="fav-btn ${favClass}" id="fav-${item.id}"
+          onclick="toggleFav(${item.id},this)" title="${isFav?'Remove from Favourites':'Add to Favourites'}">
+          <i class="${favIcon}"></i>
+        </button>
+      </div>
+      <div class="card-body-custom">
+        <div class="seller-name"><i class="fas fa-store" style="font-size:.6rem;margin-right:3px"></i>${item.seller}</div>
+        <div class="item-title" title="${item.name}">${item.name}</div>
+        <div class="item-desc">${item.desc}</div>
+        <div class="star-row">
+          <div class="stars">${starsHTML(item.rating)}</div>
+          <span class="rating-count">(${item.reviews})</span>
+        </div>
+        <div class="price-row">
+          <div class="price-main">₹${item.price}</div>
+          <div class="price-unit">/kg</div>
+          <div class="price-old">₹${item.oldPrice}</div>
+        </div>
+        <div class="price-save mb-1">Save ₹${saving} (${savePct}% off)</div>
+        <div class="meta-pills">
+          <span class="meta-pill"><i class="fas fa-box-open"></i> ${item.stock} kg</span>
+          <span class="meta-pill"><i class="fas fa-weight-hanging"></i> Min ${item.minorder} kg</span>
+        </div>
+        <div class="qty-row">
+          <span class="qty-label">Qty (kg):</span>
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQtyCard(${item.id},-1)">−</button>
+            <input class="qty-val" id="qty-${item.id}" type="number" value="${item.minorder}" min="${item.minorder}" readonly>
+            <button class="qty-btn" onclick="changeQtyCard(${item.id},1)">+</button>
+          </div>
+        </div>
+        <div class="card-actions">
+          <button class="${cartBtnClass}" id="cartbtn-${item.id}" onclick="addToCart(${item.id})">
+            <i class="fas ${isLoggedIn?'fa-cart-plus':'fa-lock'}"></i> ${isLoggedIn?'Add to Cart':'Sign In'}
+          </button>
+          <button class="${buyBtnClass}" onclick="handleBuyNow(${item.id})">
+            ${isLoggedIn?'Buy Now':'<i class=\"fas fa-lock\"></i>'}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ──────────────────── FILTER & RENDER ──────────────────── */
+function getFiltered(){
+  const q      = document.getElementById('globalSearch').value.toLowerCase();
+  const maxP   = parseInt(document.getElementById('priceRange').value);
+  const sort   = document.getElementById('sortSelect').value;
+  const checks = [...document.querySelectorAll('.sidebar-filter-box input[type=checkbox]')];
+  const enabled= checks.filter(c=>c.checked).map(c=>c.nextElementSibling.textContent.trim());
+  let list = items.filter(item=>{
+    if(activeCat!=='all' && item.cat!==activeCat) return false;
+    if(!enabled.includes(item.cat)) return false;
+    if(item.price>maxP) return false;
+    if(q && !item.name.toLowerCase().includes(q) && !item.cat.toLowerCase().includes(q) && !item.seller.toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if(sort==='price-asc')  list=[...list].sort((a,b)=>a.price-b.price);
+  if(sort==='price-desc') list=[...list].sort((a,b)=>b.price-a.price);
+  if(sort==='stock')      list=[...list].sort((a,b)=>b.stock-a.stock);
+  if(sort==='rating')     list=[...list].sort((a,b)=>b.rating-a.rating);
+  return list;
+}
+
+function renderGrid(){
+  const list=getFiltered();
+  const grid=document.getElementById('itemsGrid');
+  document.getElementById('resultCount').textContent=
+    list.length?`Showing ${list.length} item${list.length>1?'s':''}  `:'No items found';
+  grid.innerHTML=list.length
+    ? list.map((it,i)=>cardHTML(it,i)).join('')
+    : `<div class="col-12 text-center py-5 text-muted" style="font-family:var(--font)">
+         <i class="fas fa-box-open mb-3" style="font-size:2.5rem;opacity:.3;display:block"></i>
+         No items match your filters.
+       </div>`;
+}
+
+function applyAll(){ renderGrid(); renderFavSection(); }
+
+function setCat(btn){
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat=btn.dataset.cat;
+  renderGrid();
+}
+
+/* ──────────────────── QTY ──────────────────── */
+function changeQtyCard(id,delta){
+  const inp=document.getElementById('qty-'+id);
+  const item=items.find(i=>i.id===id);
+  let v=parseInt(inp.value)+delta*item.minorder;
+  if(v<item.minorder) v=item.minorder;
+  if(v>item.stock)    v=item.stock;
+  inp.value=v;
+}
+
+/* ──────────────────── CART ──────────────────── */
+function addToCart(id){
+  requireLogin(()=>{
+    const item=items.find(i=>i.id===id);
+    const qty=parseInt(document.getElementById('qty-'+id).value);
+    if(cart[id]) cart[id].qty+=qty; else cart[id]={item,qty};
+    const btn=document.getElementById('cartbtn-'+id);
+    if(btn){ btn.classList.add('added'); btn.innerHTML='<i class="fas fa-check"></i> Added!';
+      setTimeout(()=>{ btn.classList.remove('added'); btn.innerHTML='<i class="fas fa-cart-plus"></i> Add to Cart'; },1500); }
+    updateCartCount(); renderCartDrawer();
+    showToast(`${item.name} added to cart`,'green');
+  });
+}
+
+function handleBuyNow(id){
+  requireLogin(()=>{ showToast('Redirecting to checkout…','green'); });
+}
+
+function updateCartCount(){
+  const n=Object.keys(cart).length;
+  document.getElementById('cartCount').textContent=n;
+}
+
+function renderCartDrawer(){
+  const body=document.getElementById('cartBody');
+  const footer=document.getElementById('cartFooter');
+  const entries=Object.values(cart);
+  if(!entries.length){
+    body.innerHTML=`<div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>Your cart is empty.<br>Start adding recyclables!</p></div>`;
+    footer.style.display='none'; return;
+  }
+  let total=0;
+  body.innerHTML=entries.map(({item,qty})=>{
+    const sub=item.price*qty; total+=sub;
+    return `
+    <div class="cart-item">
+      <div class="ci-icon"><i class="fas ${ICONS[item.cat]||'fa-leaf'}"></i></div>
+      <div class="ci-info">
+        <div class="ci-name">${item.name}</div>
+        <div class="ci-seller">${item.seller}</div>
+        <div class="ci-bottom">
+          <div class="ci-price">₹${sub.toLocaleString()}</div>
+          <div class="ci-qty-ctrl">
+            <button class="ci-qty-btn" onclick="cartQty(${item.id},-${item.minorder})">−</button>
+            <div class="ci-qty-val">${qty} kg</div>
+            <button class="ci-qty-btn" onclick="cartQty(${item.id},${item.minorder})">+</button>
+          </div>
+          <button class="ci-remove" onclick="removeFromCart(${item.id})"><i class="fas fa-trash-alt"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cartTotal').textContent='₹'+total.toLocaleString();
+  footer.style.display='block';
+}
+
+function cartQty(id,delta){
+  if(!cart[id]) return;
+  cart[id].qty+=delta;
+  if(cart[id].qty<=0){ delete cart[id]; }
+  updateCartCount(); renderCartDrawer();
+}
+function removeFromCart(id){
+  delete cart[id]; updateCartCount(); renderCartDrawer();
+  showToast('Item removed from cart','red');
+}
+function openCart(){ document.getElementById('cartDrawer').classList.add('open'); renderCartDrawer(); }
+function closeCart(){ document.getElementById('cartDrawer').classList.remove('open'); }
+
+/* ──────────────────── FAVOURITES ──────────────────── */
+function toggleFav(id,btn){
+  requireLogin(()=>{
+    const item=items.find(i=>i.id===id);
+    if(favs.has(id)){
+      favs.delete(id);
+      btn.classList.remove('active','pulse');
+      btn.innerHTML='<i class="far fa-heart"></i>';
+      showToast(`Removed from Favourites`,'red');
+    } else {
+      favs.add(id);
+      btn.classList.add('active','pulse');
+      btn.innerHTML='<i class="fas fa-heart"></i>';
+      setTimeout(()=>btn.classList.remove('pulse'),400);
+      showToast(`${item.name} added to Favourites`,'green');
+    }
+    updateFavCount(); renderFavSection();
+  });
+}
+
+function updateFavCount(){
+  document.getElementById('favCount').textContent=favs.size;
+  document.getElementById('favBadge').textContent=favs.size;
+}
+function renderFavSection(){
+  const sec=document.getElementById('favSection');
+  const grid=document.getElementById('favGrid');
+  if(!favs.size||!isLoggedIn){sec.style.display='none';return;}
+  sec.style.display='block';
+  const favItems=items.filter(i=>favs.has(i.id));
+  grid.innerHTML=favItems.map((it,i)=>cardHTML(it,i)).join('');
+}
+function scrollToFavs(){
+  closeSidebar();
+  if(!isLoggedIn){openLoginModal();return;}
+  if(favs.size) document.getElementById('favSection').scrollIntoView({behavior:'smooth'});
+  else showToast('No favourites yet — heart items to save them!','warn');
+}
+
+/* ──────────────────── SIDEBAR ──────────────────── */
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ──────────────────── TOAST ──────────────────── */
+function showToast(msg,type='green'){
+  const wrap=document.getElementById('toastWrap');
+  const el=document.createElement('div');
+  const iconMap={green:'check-circle',red:'heart-broken',warn:'exclamation-circle'};
+  el.className=`toast-item ${type}`;
+  el.innerHTML=`<i class="fas fa-${iconMap[type]||'check-circle'}"></i> ${msg}`;
+  wrap.appendChild(el);
+  setTimeout(()=>el.classList.add('show'),30);
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),350); },2800);
+}
+
+/* ──────────────────── ENTER KEY ON LOGIN ──────────────────── */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && document.getElementById('loginModalBg').classList.contains('show')) doLogin();
+});
+
+/* ──────────────────── INIT ──────────────────── */
+renderGrid();
+</script>
+</body>
+</html>
