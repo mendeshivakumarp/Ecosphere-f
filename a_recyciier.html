@@ -1,413 +1,630 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>EcoSphere Admin - Recycler</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EcoSphere - Recycler Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        /* ===== GLOBAL ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        body {
-            background: #f4f6f8;
-            color: #333;
-            overflow-x: hidden;
+        body{
+            background:#f4f6f8;
+            overflow-x:hidden;
         }
 
-        /* ===== HEADER ===== */
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 80px;
-            background: #12ba11;
-            z-index: 1100;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        /* HEADER */
+
+        .header{
+            position:fixed;
+            top:0;
+            width:100%;
+            height:70px;
+            background:#12ba11;
+            z-index:1000;
+            box-shadow:0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-            margin: auto;
-            padding: 0 2rem;
+        .nav{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:15px 25px;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .logo{
+            color:white;
+            font-size:24px;
+            font-weight:bold;
         }
 
-        .logo h1 { color: white; margin: 0; font-size: 24px; }
-        .logo i { color: #ffd700; }
-
-        .hamburger {
-            display: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
+        .logo i{
+            color:#ffd700;
         }
 
-        .profile-mini i {
-            color: #fff;
-            font-size: 26px;
-            transition: 0.3s;
+        .profile-mini i{
+            color:white;
+            font-size:28px;
         }
 
-        .profile-mini i:hover { color: #ffd700; }
-
-        /* ===== DASHBOARD LAYOUT ===== */
-        .dashboard {
-            display: flex;
-            margin-top: 80px;
-            min-height: calc(100vh - 80px);
+        .hamburger{
+            display:none;
+            color:white;
+            font-size:24px;
+            cursor:pointer;
         }
 
-        /* ===== SIDEBAR ===== */
-        .sidebar {
-            width: 220px;
-            background: #1e293b;
-            color: white;
-            padding-top: 20px;
-            flex-shrink: 0;
+        /* DASHBOARD */
+
+        .dashboard{
+            display:flex;
+            margin-top:70px;
+            min-height:calc(100vh - 70px);
         }
 
-        .admin-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffd700;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 10px;
+        /* SIDEBAR */
+
+        .sidebar{
+            width:240px;
+            background:#1e293b;
+            color:white;
+            transition:0.3s;
         }
 
-        .sidebar a {
-            display: block;
-            padding: 12px 20px;
-            color: #cbd5e1;
-            text-decoration: none;
-            transition: 0.3s;
-            font-size: 15px;
+        .admin-logo{
+            padding:25px 20px;
+            font-size:20px;
+            font-weight:bold;
+            border-bottom:1px solid #334155;
+            color:#ffd700;
         }
 
-        .sidebar a i { margin-right: 10px; width: 20px; }
-
-        .sidebar a:hover, .sidebar a.active {
-            background: #334155;
-            color: white;
-            padding-left: 25px;
-            border-left: 4px solid #12ba11;
+        .sidebar a{
+            display:block;
+            color:#cbd5e1;
+            text-decoration:none;
+            padding:15px 20px;
+            transition:0.3s;
         }
 
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
-            flex: 1;
-            padding: 30px;
+        .sidebar a i{
+            margin-right:10px;
         }
 
-        .page-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 26px;
-            font-weight: bold;
-            color: #1a1a1a;
-            margin-bottom: 20px;
+        .sidebar a:hover,
+        .sidebar a.active{
+            background:#334155;
+            border-left:4px solid #12ba11;
+            color:white;
         }
 
-        .page-title i {
-            color: #12ba11;
-            background: #e8f5ec;
-            padding: 10px;
-            border-radius: 10px;
+        /* MAIN */
+
+        .main-content{
+            flex:1;
+            padding:30px;
         }
 
-        /* ===== CARD ===== */
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        .page-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:15px;
+            margin-bottom:25px;
         }
 
-        .card h2 { font-size: 20px; margin-bottom: 15px; }
-        h2 i, h3 i { margin-right: 8px; color: #12ba11; }
-
-        /* ===== LISTS ===== */
-        ul { list-style: none; }
-
-        li {
-            background: #f8fafc;
-            margin: 10px 0;
-            padding: 15px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #e2e8f0;
-            transition: 0.2s;
+        .page-title{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-size:26px;
+            font-weight:bold;
         }
 
-        li:hover { 
-            border-color: #12ba11; 
-            background: #e8f5e9;
+        .page-title i{
+            color:#12ba11;
+            background:#e8f5ec;
+            padding:10px;
+            border-radius:10px;
         }
 
-        li span { font-weight: 500; display: flex; align-items: center; }
-        li span i { margin-right: 12px; color: #12ba11; }
+        /* SEARCH */
 
-        /* ===== BUTTONS & INPUTS ===== */
-        button {
-            background: #12ba11;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
+        .search-box{
+            position:relative;
         }
 
-        button:hover { background: #0f9d0e; transform: translateY(-1px); }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            outline-color: #12ba11;
+        .search-box input{
+            width:250px;
+            padding:10px 15px 10px 35px;
+            border:1px solid #ddd;
+            border-radius:8px;
         }
 
-        .delete-btn {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 8px 12px;
-            font-size: 12px;
+        .search-box i{
+            position:absolute;
+            left:10px;
+            top:50%;
+            transform:translateY(-50%);
+            color:#777;
         }
 
-        .delete-btn:hover { background: #fca5a5; color: white; }
+        /* CARD */
 
-        /* ===== MODAL ===== */
-        #modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            backdrop-filter: blur(4px);
+        .user-card{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.05);
+            overflow-x:auto;
         }
 
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 350px;
-            margin: 100px auto;
-            padding: 30px;
-            border-radius: 12px;
-            position: relative;
-            box-shadow: 0 20px 25px rgba(0,0,0,0.1);
+        .add-user{
+            background:#12ba11;
+            color:white;
+            border:none;
+            padding:10px 20px;
+            border-radius:6px;
+            cursor:pointer;
+            font-weight:bold;
+            margin-bottom:20px;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #f1f5f9;
-            color: #64748b;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 50%;
+        .add-user:hover{
+            background:#0d980d;
         }
 
-        /* ===== FOOTER ===== */
-        .footer {
-            background: #1e293b;
-            color: #94a3b8;
-            padding: 2rem;
-            text-align: center;
-            font-size: 14px;
+        /* TABLE */
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            min-width:700px;
+        }
+
+        th, td{
+            padding:15px;
+            border-bottom:1px solid #eee;
+            text-align:center;
+        }
+
+        th{
+            background:#f8fafc;
+            color:#64748b;
+            text-transform:uppercase;
+            font-size:13px;
+        }
+
+        /* FORM */
+
+        .overlay{
+            display:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.5);
+            z-index:1500;
+        }
+
+        .user-form{
+            display:none;
+            position:fixed;
+            top:50%;
+            left:50%;
+            transform:translate(-50%, -50%);
+            background:white;
+            width:400px;
+            padding:30px;
+            border-radius:12px;
+            z-index:2000;
+            box-shadow:0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .user-form h3{
+            margin-bottom:20px;
+        }
+
+        .user-form input{
+            width:100%;
+            padding:12px;
+            border:1px solid #ddd;
+            border-radius:6px;
+            margin-bottom:15px;
+        }
+
+        .form-btns{
+            display:flex;
+            gap:10px;
+        }
+
+        .form-btns button{
+            flex:1;
+            padding:12px;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        .save-btn{
+            background:#12ba11;
+            color:white;
+        }
+
+        .cancel-btn{
+            background:#e2e8f0;
+        }
+
+        /* FOOTER */
+
+        .footer{
+            background:#1e293b;
+            color:#94a3b8;
+            text-align:center;
+            padding:20px;
+            font-size:14px;
         }
 
         /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .hamburger { display: block; }
-            .sidebar { display: none; } 
-            .nav { padding: 0 1rem; }
+
+        @media(max-width:992px){
+
+            .sidebar{
+                position:fixed;
+                left:-240px;
+                top:70px;
+                height:100%;
+                z-index:1200;
+            }
+
+            .sidebar.show{
+                left:0;
+            }
+
+            .hamburger{
+                display:block;
+            }
         }
+
     </style>
 </head>
+
 <body>
 
+    <!-- OVERLAY -->
+
+    <div class="overlay" id="overlay" onclick="closeForm()"></div>
+
     <!-- HEADER -->
+
     <header class="header">
+
         <nav class="nav">
-            <div class="logo-container">
-                <div class="hamburger">
+
+            <div style="display:flex;align-items:center;gap:15px;">
+
+                <div class="hamburger" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </div>
+
                 <div class="logo">
-                    <h1><i class="fas fa-leaf"></i> EcoSphere</h1>
+                    <i class="fas fa-leaf"></i> EcoSphere
                 </div>
+
             </div>
+
             <div class="profile-mini">
-                <a href="#"><i class="fas fa-user-circle"></i></a>
+                <a href="./admin_profile.html">
+                    <i class="fas fa-user-circle"></i>
+                </a>
             </div>
+
         </nav>
+
     </header>
 
     <!-- DASHBOARD -->
+
     <div class="dashboard">
-        <aside class="sidebar">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar" id="sidebar">
+
             <div class="admin-logo">
-                <i class="fas fa-user-shield"></i>
-                <span>Admin Panel</span>
+                <i class="fas fa-user-shield"></i> Admin Panel
             </div>
-            <a href="./admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="./a_users.html"><i class="fas fa-users"></i> Users</a>
-            <a href="./a_recyciier.html" class="active"><i class="fas fa-recycle"></i> Recycler</a>
+
+            <a href="admin.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+
+            <a href="./a_seller.html"><i class="fas fa-users"></i> Seller</a>
+
+            <a href="./a_recyciier.html" class="active">
+                <i class="fas fa-recycle"></i> Recycler
+            </a>
+
             <a href="./a_products.html"><i class="fas fa-box"></i> Products</a>
-            <a href="./a_orders.html"><i class="fas fa-shopping-cart"></i> Orders</a>
-            <a href="./index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
+            <a href="a_order.html"><i class="fas fa-shopping-cart"></i> Orders</a>
+
+            <a href="index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+
         </aside>
 
+        <!-- MAIN -->
+
         <main class="main-content">
-            <h1 class="page-title">
-                <i class="fas fa-recycle"></i> Recycler Management
-            </h1>
 
-            <div class="card">
-                <h2><i class="fas fa-bullseye"></i> Accepting Materials</h2>
-                <ul>
-                    <li><span><i class="fas fa-bottle-water"></i> Plastic Bottles</span></li>
-                    <li><span><i class="fas fa-wine-bottle"></i> Glass Containers</span></li>
-                    <li><span><i class="fas fa-beer"></i> Aluminum Cans</span></li>
-                </ul>
-                <br>
-                <h3><i class="fas fa-clock"></i> Drop-off Schedule</h3>
-                <p>Monday to Saturday, 9 AM to 5 PM.</p>
-                <br>
-                <h3><i class="fas fa-headset"></i> Support</h3>
-                <p><i class="fas fa-envelope"></i> help@ecosphere.com</p>
+            <div class="page-header">
+
+                <h1 class="page-title">
+                    <i class="fas fa-recycle"></i>
+                    Recycler Management
+                </h1>
+
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+
+                    <input type="text"
+                    id="searchInput"
+                    placeholder="Search Recycler..."
+                    onkeyup="searchTable()">
+                </div>
+
             </div>
 
-            <div class="card">
-                <h2><i class="fas fa-warehouse"></i> Available Scrap</h2>
-                <ul id="scrapList">
-                    <li><span><i class="fas fa-recycle"></i> Plastic Waste - 10kg</span> <button class="delete-btn" onclick="deleteItem(this)">Delete</button></li>
-                    <li><span><i class="fas fa-newspaper"></i> Newspapers - 5kg</span> <button class="delete-btn" onclick="deleteItem(this)">Delete</button></li>
-                    <li><span><i class="fas fa-industry"></i> Metal Scrap - 8kg</span> <button class="delete-btn" onclick="deleteItem(this)">Delete</button></li>
-                </ul>
-                <br>
-                <button onclick="openModal()">
-                    <i class="fas fa-plus-circle"></i> Add New Scrap
+            <!-- CARD -->
+
+            <div class="user-card">
+
+                <button class="add-user" onclick="openForm()">
+                    <i class="fas fa-user-plus"></i>
+                    Add Recycler
                 </button>
+
+                <table id="userTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>Company</th>
+                            <th>Email</th>
+                            <th>Location</th>
+                            <th>GSTIN</th>
+                            <th>Date Joined</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="userTableBody">
+
+                        <tr>
+                            <td>EcoSphere Recyclers</td>
+                            <td>ecosphere@email.com</td>
+                            <td>Hyderabad</td>
+                            <td>28AAECE5566H1ZW</td>
+                            <td>05-04-2026</td>
+                        </tr>
+
+                        <tr>
+                            <td>GreenCycle Recyclers</td>
+                            <td>greenCycle@email.com</td>
+                            <td>Amberpet</td>
+                            <td>36ABCPK2211M1Z6</td>
+                            <td>06-04-2026</td>
+                        </tr>
+
+                        <tr>
+                            <td>EcoBin Recycling</td>
+                            <td>ecobin@email.com</td>
+                            <td>Medchal</td>
+                            <td>33AALPS4455D1ZT</td>
+                            <td>07-04-2026</td>
+                        </tr>
+                           <tr>
+                            <td>RecycleHub India</td>
+                            <td>recyclehub@email.com</td>
+                            <td>Bandlaguda</td>
+                            <td>24AADCG7788K1Z9</td>
+                            <td>08-04-2026</td>
+                        </tr>
+                        <tr>
+                            <td>Arjun Das</td>
+                            <td>arjun.das@email.com</td>
+                            <td>kukatpally</td>
+                            <td>07AACCF1122P1ZV</td>
+                            <td>09-04-2026</td>
+                        </tr>
+                        <tr>
+                            <td>PureCycle Recyclers</td>
+                            <td>purecycle@email.com</td>
+                            <td>Uppal</td>
+                            <td>37AAKCS4587L1Z2</td>
+                            <td>10-04-2026</td>
+                        </tr>
+                        <tr>
+                            <td>EcoVision Recycling</td>
+                            <td>ecovision@email.com</td>
+                            <td>koti</td>
+                            <td>29AABCU9603R1ZX</td>
+                            <td>11-04-2026</td>
+                        </tr>
+                        <tr>
+                            <td>Renew Earth Recyclers</td>
+                            <td>renewearth@email.com</td>
+                            <td>Ahmadabad</td>
+                            <td>27ABCDE1234F1Z5</td>
+                            <td>12-04-2026</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
             </div>
 
-            <div class="card">
-                <h2><i class="fas fa-chart-line"></i> Recycler Insights</h2>
-                <p>Total Weight: <strong id="total">23.00 kg</strong></p>
-                <p>Total Listings: <strong id="count">3</strong></p>
-            </div>
         </main>
+
     </div>
 
-    <!-- MODAL -->
-    <div id="modal">
-        <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">&times;</button>
-            <h3>Add Scrap Entry</h3>
-            <br>
-            <label>Material Name</label>
-            <input type="text" id="material" placeholder="e.g. Cardboard Box">
-            <label>Weight (kg)</label>
-            <input type="number" id="qty" placeholder="0.00" step="0.1">
-            <button onclick="addScrap()" style="width: 100%;">Add to Inventory</button>
+    <!-- FORM -->
+
+    <div class="user-form" id="userForm">
+
+        <h3>Add Recycler</h3>
+
+        <input type="text"
+        id="name"
+        placeholder="Company Name">
+
+        <input type="email"
+        id="email"
+        placeholder="Email Address">
+
+        <input type="text"
+        id="location"
+        placeholder="City/Location">
+
+        <input type="text"
+        id="gst"
+        placeholder="GST Number">
+
+        <input type="text"
+        id="date"
+        readonly>
+
+        <div class="form-btns">
+
+            <button class="save-btn"
+            onclick="addUser()">
+                Add
+            </button>
+
+            <button class="cancel-btn"
+            onclick="closeForm()">
+                Cancel
+            </button>
+
         </div>
+
     </div>
+
+    <!-- FOOTER -->
 
     <footer class="footer">
-        <p>© 2026 EcoSphere | Empowering Sustainable Living</p>
+        © 2026 EcoSphere | Sustainable Admin Solutions
     </footer>
 
+    <!-- SCRIPT -->
+
     <script>
-        function openModal() {
-            document.getElementById("modal").style.display = "block";
-            document.getElementById("material").focus();
+
+        function toggleSidebar(){
+
+            document.getElementById("sidebar")
+            .classList.toggle("show");
+
+            document.getElementById("overlay").style.display =
+            document.getElementById("sidebar")
+            .classList.contains("show")
+            ? "block"
+            : "none";
         }
 
-        function closeModal() {
-            document.getElementById("modal").style.display = "none";
+        function openForm(){
+
+            document.getElementById("userForm").style.display = "block";
+
+            document.getElementById("overlay").style.display = "block";
+
+            let d = new Date();
+
+            let dateStr =
+            `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
+
+            document.getElementById("date").value = dateStr;
         }
 
-        function addScrap() {
-            const material = document.getElementById("material").value;
-            const qty = document.getElementById("qty").value;
+        function closeForm(){
 
-            if (material && qty && qty > 0) {
-                const li = document.createElement("li");
-                const formattedQty = parseFloat(qty).toFixed(2);
-                
-                li.innerHTML = `<span><i class="fas fa-recycle"></i> ${material} - ${formattedQty}kg</span>
-                                <button class="delete-btn" onclick="deleteItem(this)">Delete</button>`;
+            document.getElementById("userForm").style.display = "none";
 
-                document.getElementById("scrapList").appendChild(li);
+            document.getElementById("overlay").style.display = "none";
 
-                updateAnalytics(parseFloat(qty), 1);
+            document.getElementById("sidebar").classList.remove("show");
+        }
 
-                closeModal();
-                document.getElementById("material").value = "";
-                document.getElementById("qty").value = "";
-            } else {
-                alert("Please enter a valid material and quantity.");
+        function addUser(){
+
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let location = document.getElementById("location").value;
+            let gst = document.getElementById("gst").value;
+            let date = document.getElementById("date").value;
+
+            if(name == "" || email == "" || location == "" || gst == ""){
+
+                alert("Please fill all fields");
+
+                return;
+            }
+
+            let table =
+            document.getElementById("userTableBody");
+
+            let row = table.insertRow(0);
+
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${email}</td>
+                <td>${location}</td>
+                <td>${gst}</td>
+                <td>${date}</td>
+            `;
+
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("location").value = "";
+            document.getElementById("gst").value = "";
+
+            closeForm();
+        }
+
+        function searchTable(){
+
+            let input =
+            document.getElementById("searchInput")
+            .value.toUpperCase();
+
+            let rows =
+            document.getElementById("userTableBody")
+            .getElementsByTagName("tr");
+
+            for(let row of rows){
+
+                let text =
+                row.innerText.toUpperCase();
+
+                row.style.display =
+                text.includes(input)
+                ? ""
+                : "none";
             }
         }
 
-        function deleteItem(btn) {
-            const li = btn.parentElement;
-            const text = li.querySelector('span').innerText;
-            // Extract the number before 'kg'
-            const weightMatch = text.match(/(\d+(\.\d+)?)/);
-            const weight = weightMatch ? parseFloat(weightMatch[0]) : 0;
-
-            li.remove();
-            updateAnalytics(-weight, -1);
-        }
-
-        function updateAnalytics(weightDiff, countDiff) {
-            const countElem = document.getElementById("count");
-            const totalElem = document.getElementById("total");
-
-            const newCount = parseInt(countElem.innerText) + countDiff;
-            const newTotal = parseFloat(totalElem.innerText) + weightDiff;
-
-            countElem.innerText = newCount;
-            // Ensures weight is always displayed to 2 decimal places
-            totalElem.innerText = Math.max(0, newTotal).toFixed(2) + " kg";
-        }
-
-        window.onclick = function(e) {
-            if (e.target == document.getElementById("modal")) {
-                closeModal();
-            }
-        }
     </script>
+
 </body>
 </html>
