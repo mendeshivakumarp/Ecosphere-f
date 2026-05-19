@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♻️ Browse & Buy Recyclable Scrap</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link rel="shortcut icon" href="./logoblk.jpg" type="image/x-icon">
+    <style>
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }   /* Animated Navigation */
+        .header {
+            /* position: fixed; */
+            top: 0;
+            width: 100%;
+            background: rgba(18, 186, 17, 0.95);
+            backdrop-filter: blur(10px);
+            /* z-index: 1000; */
+            transition: all 0.3s ease;
+            margin: 0px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* max-width: 1200px; */
+            width: 100%;
+            margin: 0 auto;
+            padding: 0rem 3rem;
+        }
+
+        .logo h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: #ffd700;
+            margin-right: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #ffd700;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .login-btn {
+            
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+
+
+        /* Header */
+        .header1 {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            margin-top: 0px;
+        }
+
+        /* CSS-Only Modal Logic */
+        #cart-toggle {
+            display: none;
+        }
+
+        .cart-header {
+            position: fixed;
+            top: 200px;
+            right: 30px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .cart-count {
+            background: red;
+            border-radius: 50%;
+            padding: 4px 10px;
+            margin-left: 10px;
+            font-size: 0.8em;
+        }
+
+        /* Modal Background */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Show modal when checkbox is checked */
+        #cart-toggle:checked ~ .cart-modal {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .cart-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .item-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            text-transform: capitalize;
+        }
+
+        .seller-info {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 15px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: auto;
+            transition: 0.3s;
+        }
+
+        .buy-btn:hover {
+            background: #219150;
+        }
+    </style>
+</head>
+
+<body>
+      <!-- [Navigation & other sections remain exactly the same] -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <h1><i class="fas fa-leaf"></i> EcoSphere</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="./eco_sphere.html">Home</a></li>
+                <!-- <li><a href="./abc.html"> buy materials</a></li> -->
+                <li><a href="./a.html">About</a></li>
+                <li><a href="./con.html">Contact</a></li>
+                <li><a href="./log.html" >login</a></li>
+            </ul>
+        </nav>
+    </header> <br>
+
+
+<input type="checkbox" id="cart-toggle">
+
+<label for="cart-toggle" class="cart-header">
+    🛒 Cart <span class="cart-count">0</span>
+</label>
+
+<div class="header1">
+    <h1>♻️ buy the scrap</h1>
+    <p>Complete Scrap Trading | All Metals & Materials</p>
+</div>
+
+<div class="items-grid">
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://img.freepik.com/free-photo/dirty-dumped-objects-arrangement_23-2148996943.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Iron Scrap</h3>
+            <div class="seller-info">👤 Verified Seller<br>📍 Mumbai Central<br>💰 ₹34/kg</div>
+            <a href="./buy.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://2.wlimg.com/product_images/bc-full/2025/4/14567673/copper-wire-scrap-1744783904-7993888.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Copper Wire</h3>
+            <div class="seller-info">👤 Quality Metals<br>📍 Delhi NCR<br>💰 ₹720/kg</div>
+            <a href="./copper.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://cpimg.tistatic.com/04426614/b/5/Aluminium-Scrap.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Aluminium Scrap</h3>
+            <div class="seller-info">👤 Eco Recyclers<br>📍 Bangalore<br>💰 ₹145/kg</div>
+            <a href="./alminium.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://www.shutterstock.com/image-photo/bangkok-thailand-8-june-2024-260nw-2477591143.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Plastic Bottles</h3>
+            <div class="seller-info">👤 Green Life<br>📍 Pune<br>💰 ₹12/kg</div>
+            <a href="./plastic.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://images.jdmagicbox.com/quickquotes/images_main/waste-paper-scrap-2217511939-9cyeqq8q.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Paper</h3>
+            <div class="seller-info">👤 Paper Mills Hub<br>📍 Chennai<br>💰 ₹7/kg</div>
+            <a href="./paperscrap.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://5.imimg.com/data5/SELLER/Default/2024/11/465377550/LG/IH/VY/46457399/waste-plastic-scrap.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Plastic Containers</h3>
+            <div class="seller-info">👤 Polymer Traders<br>📍 Hyderabad<br>💰 ₹15/kg</div>
+            <a href="./plastic.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://5.imimg.com/data5/SELLER/Default/2025/6/516466619/ZU/TT/ZG/116580220/stainless-steel-scrap-500x500.jpeg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Utensils</h3>
+            <div class="seller-info">👤 Kitchen Scrap Experts<br>📍 Kolkata<br>💰 ₹40/kg</div>
+            <a href="./utensils.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://5.imimg.com/data5/SELLER/Default/2025/4/500004349/OU/CO/HQ/191888915/cccc-500x500.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Cardboard</h3>
+            <div class="seller-info">👤 Box Recycle Co<br>📍 Ahmedabad<br>💰 ₹10/kg</div>
+            <a href="./cardboard.html" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://www.shutterstock.com/image-photo/aluminum-scrap-metal-sheets-on-260nw-21268087.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Steel Sheet</h3>
+            <div class="seller-info">👤 Industrial Metal<br>📍 Surat<br>💰 ₹28/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://media.istockphoto.com/id/544564766/photo/galvanized-sheet-scrap.jpg?s=612x612&w=is&k=20&c=54LlRj8GDyMVQ_xoikDnWjytkpOPBFDCeC2LWaeANaU=')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Iron Sheet</h3>
+            <div class="seller-info">👤 Sheet Metal Works<br>📍 Jaipur<br>💰 ₹30/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://5.imimg.com/data5/SELLER/Default/2022/9/AR/MY/HQ/81048695/fiber-optic-cables-127145252-500x500.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Fiber Cable</h3>
+            <div class="seller-info">👤 Telecom Scrap<br>📍 Lucknow<br>💰 ₹50/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://www.dahldisposalservice.com/wp-content/uploads/2025/04/metal-picture-1.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Metal Scrap</h3>
+            <div class="seller-info">👤 General Scrap Yard<br>📍 Nagpur<br>💰 ₹40/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://cpimg.tistatic.com/6635888/b/1/brass-scrap.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Brass Scrap</h3>
+            <div class="seller-info">👤 Alloy Traders<br>📍 Indore<br>💰 ₹70/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://previews.123rf.com/images/boggy22/boggy221510/boggy22151000337/46164291-garbage-pile.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Industrial Waste Scrap</h3>
+            <div class="seller-info">👤 Factory Disposal<br>📍 Thane<br>💰 ₹45/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://www.indusmotor.com/public/uploads/pages/399220210930182201.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Old Vehicle</h3>
+            <div class="seller-info">👤 Auto Scrapyard<br>📍 Bhopal<br>💰 ₹85/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://images.jdmagicbox.com/quickquotes/images_main/ac-scrap-2223001912-lvtvm56g.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Old Home Appliances</h3>
+            <div class="seller-info">👤 Appliance Recyclers<br>📍 Visakhapatnam<br>💰 ₹38/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://5.imimg.com/data5/SELLER/Default/2025/3/493122799/WV/ZS/UL/240296448/ms-scrap-500x500.jpeg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Industrial Construction Scrap</h3>
+            <div class="seller-info">👤 Build-Trade<br>📍 Patna<br>💰 ₹45/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://3.imimg.com/data3/CL/KX/GLADMIN-159515/pcb-scrap-500x500.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Circuit Board</h3>
+            <div class="seller-info">👤 E-Waste Solutions<br>📍 Vadodara<br>💰 ₹22/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://images.jdmagicbox.com/quickquotes/images_main/used-book-scrap-10kgs-2219579823-sxwl1nse.jpg')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Books Scrap</h3>
+            <div class="seller-info">👤 Knowledge Recyclers<br>📍 Ludhiana<br>💰 ₹7/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+
+    <div class="item-card">
+        <div class="item-image" style="background-image:url('https://media.istockphoto.com/id/1414215804/photo/abandoned-washing-machines.jpg?s=612x612&w=0&k=20&c=fmgmpfaOaD3Lmxh5Vi8nvDQMrLxFTuPqeD1ynLAoHV0=')"></div>
+        <div class="item-content">
+            <h3 class="item-title">Old Washing Machine</h3>
+            <div class="seller-info">👤 White Goods Scrap<br>📍 Agra<br>💰 ₹29/kg</div>
+            <a href="#" class="buy-btn">🛒 Buy</a>
+        </div>
+    </div>
+</div>
+
+<div class="cart-modal">
+    <div class="cart-content">
+        <label for="cart-toggle" class="close-modal">&times;</label>
+        <h2>🛒 Shopping Cart</h2>
+        <hr>
+        <div id="cartItems" style="padding: 20px 0; color: #666;">
+            Your cart is currently empty.
+            <br><small>(JavaScript is required to dynamically add items)</small>
+        </div>
+        <div id="cartTotal" style="font-weight: bold; text-align: right;">Total: ₹0</div>
+        <a href="#" class="buy-btn" style="margin-top: 20px;">💳 Checkout</a>
+    </div>
+</div>
+
+</body>
+</html>
