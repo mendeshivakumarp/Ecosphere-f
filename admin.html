@@ -271,8 +271,8 @@ text-align:center;
 </div>
 
 <a href="admin.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-<a href="./a_users.html"><i class="fas fa-users"></i> Users</a>
-<a href="./a_recyciier.html"><i class="fas fa-recycle"></i> Recycler</a>
+<a href="./a_users.html"><i class="fas fa-users"></i> Sellers</a>
+<a href="./a_recyciier.html"><i class="fas fa-recycle"></i> Recyclers</a>
 <a href="./a_products.html"><i class="fas fa-box"></i> Products</a>
 <a href="./a_order.html"><i class="fas fa-shopping-cart"></i> Orders</a>
 <a href="./index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
@@ -289,7 +289,7 @@ text-align:center;
 <div class="cards">
 
 <div class="card">
-<h3>Total Users</h3>
+<h3>Total Sellers</h3>
 <p>1,247</p>
 </div>
 
@@ -316,7 +316,7 @@ text-align:center;
 <table>
 <thead>
 <tr>
-<th>USER</th>
+<th>SELLER</th>
 <th>EMAIL</th>
 <th>STATUS</th>
 </tr>
@@ -346,13 +346,13 @@ hamburger.onclick = function() {
 
 /* SAMPLE DATA */
 const orders = [
-{ USER:"Ravi Sharma",EMAIL:"ravi@email.com",STATUS:"Active"},
-{ USER:"Priya Singh",EMAIL:"priya@email.com",STATUS:"Active"},
-{ USER:"Anil Kumar",EMAIL:"anil@email.com",STATUS:"Inactive"},
-{ USER:"Sunita Patel",EMAIL:"sunita@email.com",STATUS:"Active"},
-{ USER:"Rajesh Gupta",EMAIL:"rajesh@email.com",STATUS:"Active"},
-{ USER:"Meera Joshi",EMAIL:"meera@email.com",STATUS:"Inactive"},
-{ USER:"Vikram Rao",EMAIL:"vikram@email.com",STATUS:"Active"}
+{ SELLER:"Ravi Sharma",EMAIL:"ravi@email.com",STATUS:"Active"},
+{ SELLER:"Priya Singh",EMAIL:"priya@email.com",STATUS:"Active"},
+{ SELLER:"Anil Kumar",EMAIL:"anil@email.com",STATUS:"Inactive"},
+{ SELLER:"Sunita Patel",EMAIL:"sunita@email.com",STATUS:"Active"},
+{ SELLER:"Rajesh Gupta",EMAIL:"rajesh@email.com",STATUS:"Active"},
+{ SELLER:"Meera Joshi",EMAIL:"meera@email.com",STATUS:"Inactive"},
+{ SELLER:"Vikram Rao",EMAIL:"vikram@email.com",STATUS:"Active"}
 ];
 
 /* LOAD TABLE */
@@ -360,7 +360,7 @@ function loadOrders(){
     let html="";
     orders.forEach(o=>{
         html+=`<tr>
-            <td>${o.USER}</td>
+            <td>${o.SELLER}</td>
             <td>${o.EMAIL}</td>
             <td style="color:${o.STATUS==='Active'?'green':'red'}; font-weight:bold;">${o.STATUS}</td>
         </tr>`;

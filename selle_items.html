@@ -96,58 +96,67 @@ body{
 
 /* SIDEBAR */
 
+
 .sidebar{
   position:fixed;
   top:0;
   left:0;
-  width:220px;
+  width:210px;
   height:100vh;
-  background:var(--navy);
-  padding-top:60px;
+  background:#1b2636;
   z-index:999;
+  display:flex;
+  flex-direction:column;
+  padding-top:60px;
   transition:0.3s;
 }
 
 .sidebar-close{
-  position:absolute;
-  top:15px;
-  right:15px;
-  background:none;
-  border:none;
-  color:#fff;
-  font-size:18px;
-  cursor:pointer;
   display:none;
 }
 
 .sidebar-brand{
-  padding:18px 20px;
-  color:rgba(255,255,255,0.5);
+  padding:18px 20px 16px;
   font-size:0.8rem;
   font-weight:700;
+  color:rgba(255,255,255,0.35);
   text-transform:uppercase;
+  letter-spacing:1px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  margin-bottom:8px;
 }
 
 .sidebar a{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:12px 20px;
-  color:rgba(255,255,255,0.75);
+  padding:11px 20px;
+  color:rgba(255,255,255,0.65);
   text-decoration:none;
+  font-size:0.88rem;
+  font-weight:500;
   transition:0.2s;
 }
 
+.sidebar a i{
+  width:16px;
+  text-align:center;
+}
+
 .sidebar a:hover{
-  background:rgba(255,255,255,0.08);
   color:#fff;
+  background:rgba(255,255,255,0.07);
+  padding-left:26px;
 }
 
 .sidebar a.active{
-  background:rgba(74,222,128,0.1);
   color:#4ade80;
+  background:rgba(74,222,128,0.1);
 }
 
+.sidebar a.logout{
+  color:#f87171;
+}
 /* LAYOUT */
 
 .layout{
@@ -364,16 +373,26 @@ body{
     <i class="fas fa-times"></i>
   </button>
 
-  <div class="sidebar-brand">Seller Panel</div>
+  <div class="sidebar-brand">
+    Seller Panel
+  </div>
 
-  <a href="./seller.html"><i class="fas fa-home"></i> Dashboard</a>
+  <a href="./seller.html">
+    <i class="fas fa-home"></i>
+    Dashboard
+  </a>
 
-  <a href="./selle_orders.html"><i class="fas fa-shopping-bag"></i> Orders</a>
+  <a href="./selle_orders.html">
+    <i class="fas fa-shopping-bag"></i>
+    Orders
+  </a>
 
-  <a href="./selle_items.html" class="active"><i class="fas fa-box"></i> List Items</a>
+  <a href="./selle_items.html" class="active">
+    <i class="fas fa-box"></i>
+    List Items
+  </a>
 
-  <a href="./seller_profile.html"><i class="fas fa-user"></i> Profile</a>
-   <a href="./index.html" class="logout">
+  <a href="./seller_profile.html" class="logout">
     <i class="fas fa-sign-out-alt"></i>
     Logout
   </a>
