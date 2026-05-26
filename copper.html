@@ -1,577 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ Copper Scrap Marketplace</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron Scrap Cards</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-    <link rel="shortcut icon" href="./logoblk.jpg" type="image/x-icon">
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
 
-    <style>
-        *{
-            box-sizing:border-box;
-        }
+    body{
+      background:linear-gradient(135deg,#0f172a,#334155,#1e293b);
+      min-height:100vh;
+      padding:40px;
+    }
 
-        body{
-            font-family:'Segoe UI',Tahoma,sans-serif;
-            margin:0;
-            min-height:100vh;
-            padding:20px;
-            background:linear-gradient(135deg,#1e3c72,#2a5298);
-        }
+    h1{
+      text-align:center;
+      color:white;
+      margin-bottom:40px;
+      font-size:40px;
+    }
 
-        /* NAVBAR */
-        .header{
-            top:0;
-            width:100%;
-            background:rgba(18,186,17,0.95);
-            backdrop-filter:blur(10px);
-            transition:all 0.3s ease;
-            margin:0;
-        }
+    .container{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:25px;
+    }
 
-        .nav{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            width:100%;
-            margin:0 auto;
-            padding:0rem 3rem;
-        }
+    .card{
+      background:white;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 8px 20px rgba(0,0,0,0.3);
+      transition:0.3s;
+    }
 
-        .logo h1{
-            color:white;
-            font-size:1.8rem;
-            font-weight:700;
-        }
+    .card:hover{
+      transform:translateY(-8px);
+    }
 
-        .logo i{
-            color:#ffd700;
-            margin-right:0.5rem;
-        }
+    .card img{
+      width:100%;
+      height:200px;
+      object-fit:cover;
+    }
 
-        .nav-links{
-            display:flex;
-            list-style:none;
-            gap:2rem;
-        }
+    .card-content{
+      padding:18px;
+      background:#f8fafc;
+    }
 
-        .nav-links a{
-            color:white;
-            text-decoration:none;
-            font-weight:500;
-            transition:all 0.3s ease;
-            position:relative;
-        }
+    .card-content h2{
+      color:#111827;
+      margin-bottom:10px;
+      font-size:22px;
+    }
 
-        .nav-links a::after{
-            content:'';
-            position:absolute;
-            width:0;
-            height:2px;
-            bottom:-5px;
-            left:0;
-            background:#ffd700;
-            transition:width 0.3s ease;
-        }
+    .price{
+      color:#16a34a;
+      font-size:22px;
+      font-weight:bold;
+      margin-bottom:8px;
+    }
 
-        .nav-links a:hover::after{
-            width:100%;
-        }
+    .quantity{
+      color:#475569;
+      margin-bottom:15px;
+      font-size:16px;
+    }
 
-        /* HEADER */
-        .header1{
-            background:linear-gradient(135deg,#2c3e50,#34495e);
-            color:white;
-            padding:40px;
-            text-align:center;
-            border-radius:20px;
-            margin-bottom:40px;
-            margin-top:0px;
-            box-shadow:0 15px 50px rgba(0,0,0,0.3);
-        }
+    button{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      background:linear-gradient(to right,#0f172a,#334155);
+      color:white;
+      font-size:16px;
+      cursor:pointer;
+      transition:0.3s;
+    }
 
-        /* CART */
-        .cart-header{
-            position:fixed;
-            top:200px;
-            right:30px;
-            background:linear-gradient(135deg,#27ae60,#2ecc71);
-            color:white;
-            padding:15px 25px;
-            border-radius:50px;
-            font-weight:bold;
-            cursor:pointer;
-            z-index:1000;
-            box-shadow:0 10px 40px rgba(39,174,96,0.4);
-            transition:0.3s;
-        }
-
-        .cart-header:hover{
-            transform:scale(1.08);
-        }
-
-        .cart-count{
-            background:red;
-            border-radius:50%;
-            padding:4px 10px;
-            margin-left:10px;
-            font-size:0.8em;
-        }
-
-        /* GRID */
-        .items-grid{
-            display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-            gap:25px;
-            max-width:1400px;
-            margin:0 auto;
-        }
-
-        .item-card{
-            background:white;
-            border-radius:20px;
-            overflow:hidden;
-            box-shadow:0 15px 40px rgba(0,0,0,0.2);
-            display:flex;
-            flex-direction:column;
-            transition:0.4s;
-        }
-
-        .item-card:hover{
-            transform:translateY(-10px);
-            box-shadow:0 25px 60px rgba(0,0,0,0.3);
-        }
-
-        .item-image{
-            height:230px;
-            background-size:cover;
-            background-position:center;
-        }
-
-        .item-content{
-            padding:25px;
-            flex-grow:1;
-            display:flex;
-            flex-direction:column;
-        }
-
-        .item-title{
-            font-size:1.5em;
-            margin-bottom:15px;
-            color:#2c3e50;
-        }
-
-        .seller-info{
-            background:#f1f3f5;
-            padding:15px;
-            border-radius:12px;
-            margin-bottom:20px;
-            font-size:0.95em;
-            color:#444;
-            line-height:1.7;
-            border-left:4px solid #b87333;
-        }
-
-        .price-tag{
-            background:linear-gradient(135deg,#27ae60,#2ecc71);
-            color:white;
-            padding:12px 22px;
-            border-radius:40px;
-            font-size:22px;
-            font-weight:700;
-            display:inline-block;
-            margin-bottom:20px;
-        }
-
-        .btn-group{
-            display:flex;
-            gap:15px;
-            margin-top:auto;
-        }
-
-        .add-cart,
-        .buy-btn{
-            flex:1;
-            border:none;
-            padding:15px;
-            border-radius:30px;
-            font-weight:bold;
-            cursor:pointer;
-            transition:0.3s;
-            color:white;
-        }
-
-        .add-cart{
-            background:#27ae60;
-        }
-
-        .buy-btn{
-            background:#e67e22;
-        }
-
-        .add-cart:hover,
-        .buy-btn:hover{
-            transform:translateY(-3px);
-        }
-
-        /* MODAL */
-        .cart-modal{
-            display:none;
-            position:fixed;
-            inset:0;
-            background:rgba(0,0,0,0.8);
-            z-index:2000;
-            backdrop-filter:blur(5px);
-        }
-
-        .cart-content{
-            background:white;
-            padding:30px;
-            border-radius:20px;
-            width:90%;
-            max-width:650px;
-            margin:80px auto;
-        }
-
-        @media(max-width:768px){
-
-            .items-grid{
-                grid-template-columns:1fr;
-            }
-
-            .btn-group{
-                flex-direction:column;
-            }
-
-            .nav{
-                flex-direction:column;
-                padding:1rem;
-            }
-
-            .nav-links{
-                flex-wrap:wrap;
-                justify-content:center;
-            }
-        }
-    </style>
+    button:hover{
+      background:linear-gradient(to right,#1e293b,#475569);
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <header class="header">
-        <nav class="nav">
-            <div class="logo">
-                <h1><i class="fas fa-leaf"></i> EcoSphere</h1>
-            </div>
+  <h1>copper Scrap Collection</h1>
 
-            <ul class="nav-links">
-                <li><a href="./eco_sphere.html">Home</a></li>
-                <!-- <li><a href="./abc.html">Buy Materials</a></li> -->
-                <li><a href="./a.html">About</a></li>
-                <li><a href="./con.html">Contact</a></li>
-                <li><a href="./log.html">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+  <div class="container">
 
-    <br>
-
-    <!-- CART -->
-    <div class="cart-header" onclick="toggleCart()">
-        🛒 Copper Cart <span class="cart-count" id="cartCount">0</span>
+    <div class="card">
+      <img src="https://tiimg.tistatic.com/fp/1/006/615/a-grade-iron-scrap-696.jpg" alt="">
+      <div class="card-content">
+        <h2>Heavy Iron Scrap</h2>
+        <div class="price">₹45 / Kg</div>
+        <div class="quantity">Quantity: 120 Kg</div>
+        <button>View Details</button>
+      </div>
     </div>
 
-    <!-- PAGE HEADER -->
-    <div class="header1">
-        <h1>⚡ Copper Scrap Marketplace</h1>
-        <p>Industrial Copper Wires, Pipes & Radiators | Live Market Pricing</p>
+    <div class="card">
+      <img src="https://img.magnific.com/free-photo/dirty-dumped-objects-arrangement_23-2148996943.jpg?semt=ais_hybrid&w=740&q=80" alt="">
+      <div class="card-content">
+        <h2>copper  Scrap</h2>
+        <div class="price">₹52 / Kg</div>
+        <div class="quantity">Quantity: 80 Kg</div>
+        <button>View Details</button>
+      </div>
     </div>
 
-    <!-- ITEMS -->
-    <div class="items-grid" id="itemsGrid"></div>
-
-    <!-- MODAL -->
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
-            <h2 style="text-align:center;">🛒 Copper Quote List</h2>
-
-            <div id="cartItems"></div>
-
-            <div id="cartTotal"
-                style="font-size:25px;font-weight:bold;color:#27ae60;text-align:center;margin:20px 0;">
-                Total: ₹0
-            </div>
-
-            <button class="add-cart" style="width:100%;" onclick="checkout()">
-                💳 Secure Checkout
-            </button>
-
-            <p style="text-align:center;cursor:pointer;" onclick="toggleCart()">
-                Continue Shopping
-            </p>
-        </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600" alt="">
+      <div class="card-content">
+        <h2>Machine Iron Parts</h2>
+        <div class="price">₹60 / Kg</div>
+        <div class="quantity">Quantity: 150 Kg</div>
+        <button>View Details</button>
+      </div>
     </div>
 
-    <script>
-
-        let cart = JSON.parse(localStorage.getItem('copperScrapCart') || '[]');
-
-        let copperScrapItems = [];
-
-        const copperImages = [
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfAXBIQcBw6Bvzd8a6XFzDkmVPGlRPJBGFpg&s',
-
-            'https://5.imimg.com/data5/XI/CD/FD/ANDROID-18908934/img-20190524-wa0005-jpg-500x500.jpg',
-
-            'https://5.imimg.com/data5/SELLER/Default/2024/7/435690261/GT/UI/TX/8546486/millberry-copper-wire-scrap-500x500.jpeg',
-
-            'https://sc04.alicdn.com/kf/U05f6c80f4f7243b79339e365064f20e8A.jpg',
-
-            'https://5.imimg.com/data5/SELLER/Default/2023/1/YV/MM/EV/41666624/shiny-copper-scrap-500x500.jpeg',
-
-            'https://images.unsplash.com/photo-1590502160462-0994641470ce?w=400&h=250&fit=crop',
-
-            'https://5.imimg.com/data5/SELLER/Default/2022/8/SI/YV/EV/13768297/copper-pipe-scrap-500x500.jpg'
-        ];
-
-        function generateItems(){
-
-            const types = [
-                'Millberry Wire',
-                'Copper Pipe Grade A',
-                'Candy Copper',
-                'Berry Wire',
-                'Birch/Cliff Mixed',
-                'Copper Radiators',
-                'Insulated Copper Cable',
-                'Copper Coil Scrap'
-            ];
-
-            const sellers = [
-                'Deccan Copper Traders',
-                'Red Metal Recycling',
-                'Hyderabad Alloy Hub',
-                'Precision Copper Works'
-            ];
-
-            const cities = [
-                'Hyderabad',
-                'Secunderabad',
-                'Gachibowli',
-                'Kukatpally'
-            ];
-
-            for(let i=1;i<=16;i++){
-
-                copperScrapItems.push({
-
-                    id:i,
-
-                    name:`${types[Math.floor(Math.random()*types.length)]} #${i}`,
-
-                    // price:680 + Math.floor(Math.random()*150),
-
-                    qty:25 + Math.floor(Math.random()*300),
-
-                    seller:sellers[Math.floor(Math.random()*sellers.length)],
-
-                    addr:cities[Math.floor(Math.random()*cities.length)],
-
-                    imageIndex:Math.floor(Math.random()*copperImages.length)
-
-                });
-
-            }
-
-        }
-
-        function displayItems(){
-
-            const grid = document.getElementById('itemsGrid');
-
-            grid.innerHTML = copperScrapItems.map(item => {
-
-                const inCart = cart.some(c => c.id === item.id);
-
-                return `
-
-                    <div class="item-card">
-
-                        <div class="item-image"
-                        style="background-image:url('${copperImages[item.imageIndex]}')"></div>
-
-                        <div class="item-content">
-
-                            <h3 class="item-title">${item.name}</h3>
-
-                            <div class="seller-info">
-                                👤 <strong>${item.seller}</strong><br>
-                                📍 ${item.addr}<br>
-                                📦 ${item.qty}kg available
-                            </div>
-
-                            <span class="price-tag">₹${item.price}/kg</span>
-
-                            <div class="btn-group">
-
-                                <button class="add-cart"
-                                onclick="addToCart(${item.id})">
-
-                                    ${inCart ? '✅ Added' : '🛒 Add Cart'}
-
-                                </button>
-
-                                <button class="buy-btn"
-                                onclick="buyNow(${item.id})">
-
-                                    ⚡ Buy Now
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }).join('');
-
-        }
-
-        function addToCart(id){
-
-            const item = copperScrapItems.find(i => i.id === id);
-
-            cart.push(item);
-
-            localStorage.setItem('copperScrapCart', JSON.stringify(cart));
-
-            updateCartCount();
-
-            displayItems();
-
-        }
-
-        function buyNow(id){
-
-            const item = copperScrapItems.find(i => i.id === id);
-
-            alert(`Buying ${item.name} at ₹${item.price}/kg`);
-
-        }
-
-        function toggleCart(){
-
-            const modal = document.getElementById('cartModal');
-
-            modal.style.display =
-            modal.style.display === 'block' ? 'none' : 'block';
-
-            if(modal.style.display === 'block'){
-                displayCartContents();
-            }
-
-        }
-
-        function displayCartContents(){
-
-            const container = document.getElementById('cartItems');
-
-            if(cart.length === 0){
-
-                container.innerHTML =
-                "<p style='text-align:center;'>Cart is empty.</p>";
-
-                document.getElementById('cartTotal').textContent =
-                "Total: ₹0";
-
-                return;
-
-            }
-
-            container.innerHTML = cart.map((item,index)=>`
-
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                    background:#f8f9fa;
-                    padding:15px;
-                    margin-bottom:10px;
-                    border-radius:10px;
-                ">
-
-                    <div>
-                        <strong>${item.name}</strong><br>
-                        <small>${item.seller}</small>
-                    </div>
-
-                    <div>
-                        ₹${item.price}/kg
-
-                        <button onclick="removeItem(${index})"
-                        style="
-                            border:none;
-                            background:none;
-                            color:red;
-                            cursor:pointer;
-                            margin-left:10px;
-                        ">
-                            ✕
-                        </button>
-                    </div>
-
-                </div>
-
-            `).join('');
-
-            const total =
-            cart.reduce((sum,item)=>sum + item.price,0);
-
-            document.getElementById('cartTotal').textContent =
-            `Total: ₹${total}`;
-
-        }
-
-        function removeItem(index){
-
-            cart.splice(index,1);
-
-            localStorage.setItem('copperScrapCart', JSON.stringify(cart));
-
-            updateCartCount();
-
-            displayCartContents();
-
-            displayItems();
-
-        }
-
-        function updateCartCount(){
-
-            document.getElementById('cartCount').textContent =
-            cart.length;
-
-        }
-
-        function checkout(){
-
-            alert("Redirecting to Secure Payment Gateway...");
-
-        }
-
-        generateItems();
-
-        updateCartCount();
-
-        displayItems();
-
-    </script>
+    <div class="card">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEpwHgq6FQbP9yl2hS7FOuI8ACWfrDu2LIVQ&s" alt="">
+      <div class="card-content">
+        <h2>Mixed Iron Scrap</h2>
+        <div class="price">₹40 / Kg</div>
+        <div class="quantity">Quantity: 95 Kg</div>
+        <button>View Details</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://media.istockphoto.com/id/613101492/photo/iron-pipe.jpg?s=612x612&w=0&k=20&c=VFflUZjGTVRIienq4WBdIlZqyeBx_Gv3Y4o91DOUzhU=" alt="">
+      <div class="card-content">
+        <h2>Industrial Iron Scrap</h2>
+        <div class="price">₹58 / Kg</div>
+        <div class="quantity">Quantity: 140 Kg</div>
+        <button>View Details</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/055/801/124/small/recycle-metal-recovery-concept-metal-scraps-being-lifted-by-machinery-in-an-industrial-setting-photo.jpeg" alt="">
+      <div class="card-content">
+        <h2>Construction Iron Scrap</h2>
+        <div class="price">₹50 / Kg</div>
+        <div class="quantity">Quantity: 110 Kg</div>
+        <button>View Details</button>
+      </div>
+    </div>
+
+  </div>
 
 </body>
 </html>
