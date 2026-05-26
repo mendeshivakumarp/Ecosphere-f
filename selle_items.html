@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>EcoSphere – List Items</title>
+<title>EcoSphere - List Items</title>
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
@@ -53,12 +53,6 @@ body{
   color:#fff;
   font-size:20px;
   cursor:pointer;
-  padding:6px;
-  border-radius:6px;
-}
-
-.hamburger:hover{
-  background:rgba(255,255,255,0.15);
 }
 
 .logo{
@@ -76,7 +70,7 @@ body{
 
 .profile-link{
   color:#fff;
-  font-size:22px;
+  font-size:24px;
   text-decoration:none;
 }
 
@@ -96,12 +90,11 @@ body{
 
 /* SIDEBAR */
 
-
 .sidebar{
   position:fixed;
   top:0;
   left:0;
-  width:210px;
+  width:220px;
   height:100vh;
   background:#1b2636;
   z-index:999;
@@ -111,52 +104,41 @@ body{
   transition:0.3s;
 }
 
-.sidebar-close{
-  display:none;
-}
-
 .sidebar-brand{
-  padding:18px 20px 16px;
+  padding:18px 20px;
   font-size:0.8rem;
   font-weight:700;
-  color:rgba(255,255,255,0.35);
+  color:rgba(255,255,255,0.4);
   text-transform:uppercase;
   letter-spacing:1px;
-  border-bottom:1px solid rgba(255,255,255,0.06);
-  margin-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .sidebar a{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:11px 20px;
-  color:rgba(255,255,255,0.65);
+  padding:12px 20px;
+  color:rgba(255,255,255,0.7);
   text-decoration:none;
-  font-size:0.88rem;
-  font-weight:500;
-  transition:0.2s;
-}
-
-.sidebar a i{
-  width:16px;
-  text-align:center;
+  transition:0.3s;
 }
 
 .sidebar a:hover{
+  background:rgba(255,255,255,0.08);
   color:#fff;
-  background:rgba(255,255,255,0.07);
-  padding-left:26px;
+  padding-left:28px;
 }
 
 .sidebar a.active{
-  color:#4ade80;
   background:rgba(74,222,128,0.1);
+  color:#4ade80;
 }
 
 .sidebar a.logout{
   color:#f87171;
 }
+
 /* LAYOUT */
 
 .layout{
@@ -174,9 +156,9 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
   margin-bottom:25px;
+  flex-wrap:wrap;
+  gap:15px;
 }
 
 .page-title-left{
@@ -210,10 +192,43 @@ body{
   border-radius:8px;
   cursor:pointer;
   font-weight:600;
+  transition:0.3s;
 }
 
 .btn-add:hover{
   background:var(--green-dark);
+}
+
+/* FORM */
+
+.add-form{
+  display:none;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:25px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.add-form h3{
+  margin-bottom:15px;
+}
+
+.add-form input{
+  width:100%;
+  padding:10px;
+  margin-bottom:12px;
+  border:1px solid #ccc;
+  border-radius:8px;
+}
+
+.add-form button{
+  background:green;
+  color:#fff;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
 }
 
 /* GRID */
@@ -232,6 +247,11 @@ body{
   overflow:hidden;
   box-shadow:0 2px 8px rgba(0,0,0,0.08);
   transition:0.3s;
+  width:100%;
+  max-width:280px;
+  height:420px;
+  display:flex;
+  flex-direction:column;
 }
 
 .item-card:hover{
@@ -241,7 +261,8 @@ body{
 /* IMAGE */
 
 .item-img-wrap{
-  height:180px;
+  width:100%;
+  height:220px;
   overflow:hidden;
 }
 
@@ -255,57 +276,35 @@ body{
 
 .item-body{
   padding:16px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .item-name{
-  font-size:1rem;
+  font-size:1.1rem;
   font-weight:700;
-  margin-bottom:6px;
+  margin-bottom:10px;
+  color:#111;
 }
 
 .item-cat{
+  font-size:0.9rem;
   color:#666;
-  font-size:0.82rem;
-  margin-bottom:12px;
-}
-
-.item-meta{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:14px;
+  margin-bottom:10px;
 }
 
 .item-price{
-  color:var(--green-dark);
+  font-size:1rem;
   font-weight:700;
+  color:green;
+  margin-bottom:8px;
 }
 
-/* BUTTONS */
-
-.item-actions{
-  display:flex;
-  gap:8px;
-}
-
-.item-actions button{
-  flex:1;
-  border:none;
-  padding:8px;
-  border-radius:7px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.btn-edit{
-  background:#dbeafe;
-}
-
-.btn-toggle{
-  background:#dcfce7;
-}
-
-.btn-delete{
-  background:#fee2e2;
+.item-qty{
+  font-size:0.95rem;
+  color:#333;
 }
 
 /* RESPONSIVE */
@@ -318,24 +317,16 @@ body{
 
   .sidebar{
     transform:translateX(-100%);
-    padding-top:0;
   }
 
   .sidebar.open{
     transform:translateX(0);
   }
 
-  .sidebar-close{
-    display:block;
-  }
-
   .layout{
     margin-left:0;
   }
 
-  .content{
-    padding:18px 14px;
-  }
 }
 
 </style>
@@ -355,7 +346,7 @@ body{
     <i class="fas fa-leaf"></i> EcoSphere
   </a>
 
-  <a href="./seller_profile.html" class="profile-link">
+  <a href="#" class="profile-link">
     <i class="fas fa-user-circle"></i>
   </a>
 
@@ -369,41 +360,39 @@ body{
 
 <aside class="sidebar" id="sidebar">
 
-  <button class="sidebar-close" onclick="closeSidebar()">
-    <i class="fas fa-times"></i>
-  </button>
-
   <div class="sidebar-brand">
     Seller Panel
   </div>
 
-  <a href="./seller.html">
+  <a href="seller.html">
     <i class="fas fa-home"></i>
     Dashboard
   </a>
 
-  <a href="./selle_orders.html">
+  <a href="selle_orders.html">
     <i class="fas fa-shopping-bag"></i>
     Orders
   </a>
 
-  <a href="./selle_items.html" class="active">
+  <a href="selle_items.html" class="active">
     <i class="fas fa-box"></i>
     List Items
   </a>
 
-  <a href="./seller_profile.html" class="logout">
+  <a href="index.html" class="logout">
     <i class="fas fa-sign-out-alt"></i>
     Logout
   </a>
 
 </aside>
 
-<!-- LAYOUT -->
+<!-- MAIN -->
 
 <div class="layout">
 
 <div class="content">
+
+<!-- TITLE -->
 
 <div class="page-title">
 
@@ -417,39 +406,58 @@ body{
 
 </div>
 
-<button class="btn-add">
-<i class="fas fa-plus"></i> Add Item
+<button class="btn-add" onclick="openForm()">
+  <i class="fas fa-plus"></i> Add Item
 </button>
 
 </div>
 
-<!-- GRID -->
+<!-- FORM -->
 
-<div class="items-grid">
+<div class="add-form" id="addForm">
+
+  <h3>Add New Item</h3>
+
+  <input type="text" id="productName" placeholder="Product Name">
+
+  <input type="text" id="productCategory" placeholder="Category">
+
+  <input type="text" id="productPrice" placeholder="Price">
+
+  <input type="text" id="productQuantity" placeholder="Quantity">
+
+  <input type="file" id="productImage">
+
+  <button onclick="addItem()">Add Product</button>
+
+</div>
+
+<!-- ITEMS GRID -->
+
+<div class="items-grid" id="itemsGrid">
 
   <!-- CARD 1 -->
 
   <div class="item-card">
 
     <div class="item-img-wrap">
-      <img src=https://tse4.mm.bing.net/th/id/OIP.RDCmX8JIAoa1EE-n9WBiGwHaFW?cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3 alt="">
+      <img src="https://tse4.mm.bing.net/th/id/OIP.RDCmX8JIAoa1EE-n9WBiGwHaFW?cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3">
     </div>
 
     <div class="item-body">
 
       <div class="item-name">Plastic Bottles</div>
 
-      <div class="item-cat">Plastic</div>
-
-      <div class="item-meta">
-        <div class="item-price">₹12/kg</div>
-        <div>350kg</div>
+      <div class="item-cat">
+        Category : Plastic
       </div>
 
-      <div class="item-actions">
-        <button class="btn-edit">Edit</button>
-        <button class="btn-toggle">Active</button>
-        <button class="btn-delete">Delete</button>
+      <div class="item-price">
+        Price : ₹12/kg
+      </div>
+
+      <div class="item-qty">
+        Quantity : 350kg
       </div>
 
     </div>
@@ -461,24 +469,23 @@ body{
   <div class="item-card">
 
     <div class="item-img-wrap">
-      <img src="https://5.imimg.com/data5/SELLER/Default/2022/6/VY/BS/TG/79268969/newspaper-waste-500x500.jpg" alt="">
+      <img src="https://5.imimg.com/data5/SELLER/Default/2022/6/VY/BS/TG/79268969/newspaper-waste-500x500.jpg">
     </div>
 
     <div class="item-body">
 
       <div class="item-name">Old Newspapers</div>
 
-      <div class="item-cat">Paper</div>
-
-      <div class="item-meta">
-        <div class="item-price">₹8/kg</div>
-        <div>200kg</div>
+      <div class="item-cat">
+        Category : Paper
       </div>
 
-      <div class="item-actions">
-        <button class="btn-edit">Edit</button>
-        <button class="btn-toggle">Active</button>
-        <button class="btn-delete">Delete</button>
+      <div class="item-price">
+        Price : ₹8/kg
+      </div>
+
+      <div class="item-qty">
+        Quantity : 200kg
       </div>
 
     </div>
@@ -490,24 +497,23 @@ body{
   <div class="item-card">
 
     <div class="item-img-wrap">
-      <img src="https://img2.exportersindia.com/product_images/bc-full/2023/2/8230165/iron-metal-scrap-1675227906-6742182.jpeg" alt="">
+      <img src="https://img2.exportersindia.com/product_images/bc-full/2023/2/8230165/iron-metal-scrap-1675227906-6742182.jpeg">
     </div>
 
     <div class="item-body">
 
       <div class="item-name">Iron Scrap</div>
 
-      <div class="item-cat">Metal</div>
-
-      <div class="item-meta">
-        <div class="item-price">₹28/kg</div>
-        <div>600kg</div>
+      <div class="item-cat">
+        Category : Metal
       </div>
 
-      <div class="item-actions">
-        <button class="btn-edit">Edit</button>
-        <button class="btn-toggle">Active</button>
-        <button class="btn-delete">Delete</button>
+      <div class="item-price">
+        Price : ₹28/kg
+      </div>
+
+      <div class="item-qty">
+        Quantity : 600kg
       </div>
 
     </div>
@@ -519,24 +525,23 @@ body{
   <div class="item-card">
 
     <div class="item-img-wrap">
-      <img src="https://cdn.prod.website-files.com/61fa355c7ae67c2c0d81a4ec/649d3cbd57c468e5321a5a28_Wine-glass-colors-04.jpg" alt="">
+      <img src="https://cdn.prod.website-files.com/61fa355c7ae67c2c0d81a4ec/649d3cbd57c468e5321a5a28_Wine-glass-colors-04.jpg">
     </div>
 
     <div class="item-body">
 
       <div class="item-name">Glass Bottles</div>
 
-      <div class="item-cat">Glass</div>
-
-      <div class="item-meta">
-        <div class="item-price">₹6/kg</div>
-        <div>120kg</div>
+      <div class="item-cat">
+        Category : Glass
       </div>
 
-      <div class="item-actions">
-        <button class="btn-edit">Edit</button>
-        <button class="btn-toggle">Active</button>
-        <button class="btn-delete">Delete</button>
+      <div class="item-price">
+        Price : ₹6/kg
+      </div>
+
+      <div class="item-qty">
+        Quantity : 120kg
       </div>
 
     </div>
@@ -551,6 +556,8 @@ body{
 
 <script>
 
+/* SIDEBAR */
+
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("open");
   document.getElementById("overlay").classList.toggle("show");
@@ -559,6 +566,82 @@ function toggleSidebar(){
 function closeSidebar(){
   document.getElementById("sidebar").classList.remove("open");
   document.getElementById("overlay").classList.remove("show");
+}
+
+/* FORM */
+
+function openForm(){
+
+  let form = document.getElementById("addForm");
+
+  if(form.style.display === "block"){
+    form.style.display = "none";
+  }else{
+    form.style.display = "block";
+  }
+}
+
+/* ADD ITEM */
+
+function addItem(){
+
+  let name = document.getElementById("productName").value;
+  let category = document.getElementById("productCategory").value;
+  let price = document.getElementById("productPrice").value;
+  let quantity = document.getElementById("productQuantity").value;
+  let imageInput = document.getElementById("productImage");
+
+  if(name === "" || category === "" || price === "" || quantity === ""){
+    alert("Please fill all fields");
+    return;
+  }
+
+  if(imageInput.files.length === 0){
+    alert("Please select image");
+    return;
+  }
+
+  let imageURL = URL.createObjectURL(imageInput.files[0]);
+
+  let item = `
+
+  <div class="item-card">
+
+    <div class="item-img-wrap">
+      <img src="${imageURL}">
+    </div>
+
+    <div class="item-body">
+
+      <div class="item-name">${name}</div>
+
+      <div class="item-cat">
+        Category : ${category}
+      </div>
+
+      <div class="item-price">
+        Price : ${price}
+      </div>
+
+      <div class="item-qty">
+        Quantity : ${quantity}
+      </div>
+
+    </div>
+
+  </div>
+
+  `;
+
+  document.getElementById("itemsGrid").innerHTML += item;
+
+  document.getElementById("productName").value = "";
+  document.getElementById("productCategory").value = "";
+  document.getElementById("productPrice").value = "";
+  document.getElementById("productQuantity").value = "";
+  document.getElementById("productImage").value = "";
+
+  document.getElementById("addForm").style.display = "none";
 }
 
 </script>
