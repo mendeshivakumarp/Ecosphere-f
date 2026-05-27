@@ -377,6 +377,15 @@ color:#ffd700;
     color:#777;
 }
 
+.btn{
+    padding:12px 25px; 
+    border-radius:25px;
+    border: transparent;
+    background:#22c55e;
+    color:#fff;
+    transition:0.3s;
+}
+
 /* ===== TESTIMONIALS ===== */
 .testimonials-grid{
     display:grid;

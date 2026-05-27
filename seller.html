@@ -6,7 +6,9 @@
 <title>EcoSphere – Seller Dashboard</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
 <style>
 
@@ -40,8 +42,6 @@ body{
   gap:14px;
 }
 
-/* HAMBURGER */
-
 .hamburger{
   background:none;
   border:none;
@@ -53,11 +53,6 @@ body{
   display:none;
   align-items:center;
   justify-content:center;
-  flex-shrink:0;
-}
-
-.hamburger:hover{
-  background:rgba(255,255,255,0.15);
 }
 
 .logo{
@@ -75,11 +70,6 @@ body{
 .profile-link{
   color:#fff;
   font-size:22px;
-  opacity:0.9;
-}
-
-.profile-link:hover{
-  opacity:1;
 }
 
 /* OVERLAY */
@@ -139,11 +129,6 @@ body{
   transition:0.2s;
 }
 
-.sidebar a i{
-  width:16px;
-  text-align:center;
-}
-
 .sidebar a:hover{
   color:#fff;
   background:rgba(255,255,255,0.07);
@@ -159,7 +144,7 @@ body{
   color:#f87171;
 }
 
-/* LAYOUT */
+/* MAIN */
 
 .dashboard{
   margin-top:60px;
@@ -171,10 +156,7 @@ body{
   margin-left:210px;
   width:100%;
   padding:28px 24px;
-  min-height:calc(100vh - 60px);
 }
-
-/* PAGE TITLE */
 
 .page-title{
   font-size:1.35rem;
@@ -208,8 +190,7 @@ body{
 }
 
 .card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+  transform:translateY(-3px);
 }
 
 .card-icon{
@@ -259,7 +240,7 @@ body{
   gap:20px;
 }
 
-/* PANELS */
+/* PANEL */
 
 .panel{
   background:#fff;
@@ -280,6 +261,35 @@ body{
 
 .panel-title i{
   color:#18a118;
+}
+
+/* CHART */
+
+.chart-box{
+  position:relative;
+  width:100%;
+  max-width:260px;
+  margin:auto;
+}
+
+.chart-center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+
+.chart-center h2{
+  font-size:2rem;
+  font-weight:700;
+  color:#1e293b;
+}
+
+.chart-center p{
+  font-size:0.8rem;
+  color:#64748b;
+  margin-top:3px;
 }
 
 /* TABLE */
@@ -367,7 +377,6 @@ footer{
 
   .sidebar.open{
     transform:translateX(0);
-    box-shadow:8px 0 30px rgba(0,0,0,0.2);
   }
 
   .sidebar-close{
@@ -389,19 +398,6 @@ footer{
 
   .cards{
     grid-template-columns:1fr;
-    gap:12px;
-  }
-
-}
-
-@media(max-width:480px){
-
-  .card-value{
-    font-size:1.5rem;
-  }
-
-  .page-title{
-    font-size:1.1rem;
   }
 
 }
@@ -423,7 +419,7 @@ footer{
     <i class="fas fa-leaf"></i> EcoSphere
   </div>
 
-  <a href="./seller_profile.html" class="profile-link">
+  <a href="#" class="profile-link">
     <i class="fas fa-user-circle"></i>
   </a>
 
@@ -445,25 +441,27 @@ footer{
     Seller Panel
   </div>
 
-  <a href="./seller.html" class="active">
+  <a href="seller.html" class="active">
     <i class="fas fa-home"></i>
     Dashboard
   </a>
 
-  <a href="./selle_orders.html">
+  <a href="selle_orders.html">
     <i class="fas fa-shopping-bag"></i>
     Orders
   </a>
 
-  <a href="./selle_items.html">
+  <a href="selle_items.html">
     <i class="fas fa-box"></i>
     List Items
   </a>
+
   <a href="seller_profile.html">
-    <i class="fas fa-user"></i> Profile
+    <i class="fas fa-user"></i>
+    Profile
   </a>
 
-  <a href="./seller_profile.html" class="logout">
+  <a href="login.html" class="logout">
     <i class="fas fa-sign-out-alt"></i>
     Logout
   </a>
@@ -539,7 +537,16 @@ footer{
           Order Status
         </div>
 
-        <canvas id="chart" height="260"></canvas>
+        <div class="chart-box">
+
+          <canvas id="chart" height="260"></canvas>
+
+          <div class="chart-center">
+            <h2 id="chartNumber">0</h2>
+            <p>Total Orders</p>
+          </div>
+
+        </div>
 
       </div>
 
@@ -610,12 +617,15 @@ footer{
 
 <script>
 
+/* ORDER DATA */
+
 const orders = [
 
   { status:"Pending" },
   { status:"Completed" },
   { status:"Completed" },
-  { status:"Pending" }
+  { status:"Pending" },
+  { status:"Completed" }
 
 ];
 
@@ -624,6 +634,8 @@ orders.filter(o => o.status === "Pending").length;
 
 const completed =
 orders.filter(o => o.status === "Completed").length;
+
+/* CARD VALUES */
 
 document.getElementById("total").innerText =
 orders.length;
@@ -634,7 +646,14 @@ pending;
 document.getElementById("completed").innerText =
 completed;
 
+/* CENTER NUMBER */
+
+document.getElementById("chartNumber").innerText =
+orders.length;
+
 /* CHART */
+
+Chart.register(ChartDataLabels);
 
 new Chart(document.getElementById("chart"),{
 
@@ -652,12 +671,32 @@ new Chart(document.getElementById("chart"),{
   },
 
   options:{
+
     plugins:{
+
       legend:{
         position:"bottom"
+      },
+
+      datalabels:{
+
+        color:"#fff",
+
+        font:{
+          size:18,
+          weight:"bold"
+        },
+
+        formatter:(value)=>{
+          return value;
+        }
+
       }
+
     },
+
     cutout:"68%"
+
   }
 
 });
