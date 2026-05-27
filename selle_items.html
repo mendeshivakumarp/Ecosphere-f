@@ -307,13 +307,62 @@ body{
   color:#333;
 }
 
-/* RESPONSIVE */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.45);
+  padding:20px;
+  z-index:1001;
+}
 
-@media(max-width:768px){
+.modal.show{
+  display:flex;
+}
 
-  .hamburger{
-    display:block;
-  }
+.modal-content{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.12);
+}
+
+.modal-content h3{
+  margin-bottom:18px;
+  font-size:1.1rem;
+  color:#1b2636;
+}
+
+.modal-content label{
+  display:block;
+  margin-bottom:14px;
+  font-size:0.9rem;
+  color:#374151;
+}
+
+.modal-content input{
+  width:100%;
+  padding:10px 12px;
+  margin-top:6px;
+  border:1px solid #d1d5db;
+  border-radius:10px;
+  background:#f8fafc;
+}
+
+.form-actions{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+.form-actions .btn-add,
+.form-actions .btn-delete{
+  flex:1;
+}
 
   .sidebar{
     transform:translateX(-100%);
@@ -406,10 +455,42 @@ body{
 
 </div>
 
-<button class="btn-add" onclick="openForm()">
-  <i class="fas fa-plus"></i> Add Item
+<button class="btn-add">
+<i class="fas fa-plus"></i> Add Item
 </button>
 
+</div>
+
+<div class="modal" id="item-modal">
+  <div class="modal-content">
+    <h3>Add New Item</h3>
+    <form id="item-form" onsubmit="return false;">
+      <label>
+        Item Name
+        <input type="text" id="item-name" placeholder="Plastic Bottles" required>
+      </label>
+      <label>
+        Category
+        <input type="text" id="item-category" placeholder="Plastic" required>
+      </label>
+      <label>
+        Price
+        <input type="text" id="item-price" placeholder="₹12/kg" required>
+      </label>
+      <label>
+        Quantity
+        <input type="text" id="item-quantity" placeholder="350kg" required>
+      </label>
+      <label>
+        Image URL
+        <input type="url" id="item-image" placeholder="https://example.com/image.jpg" required>
+      </label>
+      <div class="form-actions">
+        <button type="button" class="btn-add" onclick="saveItem()">Save Item</button>
+        <button type="button" class="btn-delete" onclick="closeItemModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- FORM -->
@@ -556,8 +637,6 @@ body{
 
 <script>
 
-/* SIDEBAR */
-
 function toggleSidebar(){
   document.getElementById("sidebar").classList.toggle("open");
   document.getElementById("overlay").classList.toggle("show");
@@ -566,82 +645,6 @@ function toggleSidebar(){
 function closeSidebar(){
   document.getElementById("sidebar").classList.remove("open");
   document.getElementById("overlay").classList.remove("show");
-}
-
-/* FORM */
-
-function openForm(){
-
-  let form = document.getElementById("addForm");
-
-  if(form.style.display === "block"){
-    form.style.display = "none";
-  }else{
-    form.style.display = "block";
-  }
-}
-
-/* ADD ITEM */
-
-function addItem(){
-
-  let name = document.getElementById("productName").value;
-  let category = document.getElementById("productCategory").value;
-  let price = document.getElementById("productPrice").value;
-  let quantity = document.getElementById("productQuantity").value;
-  let imageInput = document.getElementById("productImage");
-
-  if(name === "" || category === "" || price === "" || quantity === ""){
-    alert("Please fill all fields");
-    return;
-  }
-
-  if(imageInput.files.length === 0){
-    alert("Please select image");
-    return;
-  }
-
-  let imageURL = URL.createObjectURL(imageInput.files[0]);
-
-  let item = `
-
-  <div class="item-card">
-
-    <div class="item-img-wrap">
-      <img src="${imageURL}">
-    </div>
-
-    <div class="item-body">
-
-      <div class="item-name">${name}</div>
-
-      <div class="item-cat">
-        Category : ${category}
-      </div>
-
-      <div class="item-price">
-        Price : ${price}
-      </div>
-
-      <div class="item-qty">
-        Quantity : ${quantity}
-      </div>
-
-    </div>
-
-  </div>
-
-  `;
-
-  document.getElementById("itemsGrid").innerHTML += item;
-
-  document.getElementById("productName").value = "";
-  document.getElementById("productCategory").value = "";
-  document.getElementById("productPrice").value = "";
-  document.getElementById("productQuantity").value = "";
-  document.getElementById("productImage").value = "";
-
-  document.getElementById("addForm").style.display = "none";
 }
 
 </script>
