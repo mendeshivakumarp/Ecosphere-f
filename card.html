@@ -289,79 +289,47 @@ body{
 </div>
 
 <script>
-
-const scraps = [
-
-{
-    name:"Iron Scrap",
-    category:"Metal Scrap",
-    quantity:"120 Kg",
-    price:"₹45 / Kg",
-    image:"https://2.wlimg.com/product_images/bc-full/2025/4/14567673/copper-wire-scrap-1744783904-7993888.jpg"
-},
-
-{
-    name:"Plastic Scrap",
-    category:"Recyclable Waste",
-    quantity:"80 Kg",
-    price:"₹25 / Kg",
-    image:"https://img.freepik.com/free-photo/dirty-dumped-objects-arrangement_23-2148996943.jpg"
-},
-
-{
-    name:"Aluminium Scrap",
-    category:"Metal Waste",
-    quantity:"150 Kg",
-    price:"₹18 / Kg",
-    image:"https://cpimg.tistatic.com/04426614/b/5/Aluminium-Scrap.jpg"
-},
-
-{
-    name:"Paper Scrap",
-    category:"Paper Waste",
-    quantity:"60 Kg",
-    price:"₹95 / Kg",
-    image:"https://images.jdmagicbox.com/quickquotes/images_main/waste-paper-scrap-2217511939-9cyeqq8q.jpg"
-}
-
-];
-
+const cartKey = "ecoCartItems";
 const container = document.getElementById("cardContainer");
 
-scraps.forEach(scrap => {
-
-container.innerHTML += `
-
-<div class="card">
-
-    <img src="${scrap.image}" alt="${scrap.name}">
-
-    <div class="card-content">
-
-        <h2>${scrap.name}</h2>
-
-        <p><b>Category:</b> ${scrap.category}</p>
-
-        <p><b>Quantity:</b> ${scrap.quantity}</p>
-
-        <div class="price">${scrap.price}</div>
-
-        <button class="btn" onclick="showMessage('${scrap.name}')">
-            Buy Now
-        </button>
-
-    </div>
-
-</div>
-
-`;
-
-});
-
-function showMessage(product){
-    alert(product + " added successfully!");
+function getCartItems() {
+    try {
+        return JSON.parse(localStorage.getItem(cartKey)) || [];
+    } catch (err) {
+        return [];
+    }
 }
 
+const cartItems = getCartItems();
+
+if (cartItems.length === 0) {
+    container.innerHTML = `
+        <div style="grid-column:1/-1;padding:40px;text-align:center;color:#475569;background:#fff;border-radius:18px;box-shadow:0 4px 12px rgba(0,0,0,0.10);">
+            Your cart is empty. Add items from the Buy Materials page.
+        </div>
+    `;
+} else {
+    cartItems.forEach(scrap => {
+        container.innerHTML += `
+            <div class="card">
+                <img src="${scrap.image}" alt="${scrap.name}">
+                <div class="card-content">
+                    <h2>${scrap.name}</h2>
+                    <p><b>Seller:</b> ${scrap.seller}</p>
+                    <p><b>Location:</b> ${scrap.location}</p>
+                    <div class="price">${scrap.price}</div>
+                    <button class="btn" onclick="showMessage('${scrap.name}')">
+                        Buy Now
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function showMessage(product) {
+    alert(product + " added successfully!");
+}
 </script>
 
 </body>

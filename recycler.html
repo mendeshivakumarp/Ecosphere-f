@@ -116,11 +116,15 @@ body {
 
 /* SIDEBAR */
 .sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
   width: 220px;
   background: #1e293b;
   color: white;
   padding-top: 10px;
-  min-height: calc(100vh - 80px);
+  height: calc(100vh - 80px);
+  min-height: unset;
   transition: transform 0.35s ease;
   z-index: 950;
   flex-shrink: 0;
@@ -161,6 +165,7 @@ body {
   flex: 1;
   padding: 25px;
   overflow-x: hidden;
+  margin-left: 220px;
 }
 
 .dashboard-header {
@@ -242,7 +247,7 @@ body {
 
   .sidebar.open { transform: translateX(0); }
 
-  .main { padding: 15px; }
+  .main { padding: 15px; margin-left: 0; }
 }
 </style>
 </head>

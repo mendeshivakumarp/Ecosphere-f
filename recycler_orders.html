@@ -106,10 +106,14 @@ body {
 /* ── SIDEBAR ── */
 .sidebar {
   width: 220px;
+  position: fixed;
+  top: 80px;
+  left: 0;
   background: #1e293b;
   color: white;
   padding-top: 20px;
-  min-height: calc(100vh - 80px);
+  height: calc(100vh - 80px);
+  min-height: unset;
   transition: transform 0.35s ease;
   z-index: 950;
 }
@@ -146,6 +150,7 @@ body {
 .main {
   flex: 1;
   padding: 20px;
+  margin-left: 220px;
 }
 
 /* PAGE HEADER */
@@ -419,12 +424,12 @@ tbody tr:hover td { background: #f8fafc; }
 /* ── FOOTER ── */
 .footer-bottom {
   text-align: center;
-  padding: 15px;
+  padding: 20px;
   background: #1a1a1a;
   color: #aaa;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 13px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 /* ── RESPONSIVE ── */
@@ -442,7 +447,7 @@ tbody tr:hover td { background: #f8fafc; }
     overflow-y: auto;
   }
   .sidebar.open { transform: translateX(0); }
-  .main { padding: 14px; }
+  .main { padding: 14px; margin-left: 0; }
   .cards { gap: 10px; }
   .card { min-width: 130px; }
   .search-wrap { margin-left: 0; width: 100%; }
